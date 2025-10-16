@@ -1,7 +1,7 @@
 NAME = cub3D
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC = *.c
+SRC = main.c
 OBJ = $(SRC:.o=.c)
 
 all: $(NAME)

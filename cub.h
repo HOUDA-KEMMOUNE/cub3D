@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cub.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkemmoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/16 16:38:51 by hkemmoun          #+#    #+#             */
-/*   Updated: 2025/10/16 16:38:54 by hkemmoun         ###   ########.fr       */
+/*   Created: 2025/10/16 16:53:33 by hkemmoun          #+#    #+#             */
+/*   Updated: 2025/10/16 16:53:33 by hkemmoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+# ifndef CUB_H
+# define CUB_H
 
-int	main()
-{
-	int	fd;
+# include "./libft/libft.h"
+# include "./get_next_line/get_next_line.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <limits.h>
+# include <signal.h>
+# include <sys/stat.h>
+# include <sys/wait.h>
 
-	fd = open("map.cub", O_RDONLY);
-	if (fd < 0)
-	{
-		printf("Not a valid file :/\n");
-		return (1);
-	}
-	printf("Good for u ;D\n");
-}
+# endif
