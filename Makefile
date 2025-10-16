@@ -2,20 +2,20 @@ NAME = cub3D
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 SRC = main.c
-OBJ = $(SRC:.o=.c)
+OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $@
+	@$(CC) $(CFLAGS) $(OBJ) -o $@
 
 clean:
-	rm -rf $(OBJ)
+	@rm -rf $(OBJ)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re: fclean all
