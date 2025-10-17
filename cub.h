@@ -24,4 +24,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 
+// --------- Parsing ----------------
+int     parsing_map(int fd, char *map_name);
+
 # endif

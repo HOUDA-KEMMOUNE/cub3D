@@ -1,7 +1,7 @@
 NAME = cub3D
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC = main.c
+SRC = parsing_map.c main.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

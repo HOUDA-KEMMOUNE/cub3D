@@ -11,3 +11,14 @@
 /* ************************************************************************** */
 
 #include "cub.h"
+
+
+int	parsing_map(int fd, char *map_name)
+{
+	char	*line;
+	(void) map_name;
+
+	line = get_next_line(fd);
+	printf("the line -> %s\n", line);
+	return (0);
+}
