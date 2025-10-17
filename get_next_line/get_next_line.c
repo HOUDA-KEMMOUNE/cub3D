@@ -66,13 +66,19 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	// if (fd == -2)
+	// 	return (free(rest), rest = NULL, NULL);
 	buffer = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	line = get_line(buffer, rest, fd);
 	free (buffer);
 	if (!line)
-		return (NULL);
+	{
+	    free(rest);
+	    rest = NULL;
+	    return (NULL);
+	}
 	rest = rest_char(line);
 	return (line);
 }

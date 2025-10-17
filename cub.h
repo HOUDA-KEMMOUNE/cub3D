@@ -25,6 +25,6 @@
 # include <sys/wait.h>
 
 // --------- Parsing ----------------
-int     parsing_map(int fd, char *map_name);
+int     parsing_map(int fd);
 
 # endif

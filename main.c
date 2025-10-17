@@ -22,6 +22,7 @@ int	main()
 		printf("Not a valid file :/\n");
 		return (1);
 	}
-	printf("Good for u ;D\n");
-	parsing_map(fd, "map.cub"); //TO_DO
+	// printf("Good for u ;D\n");
+	parsing_map(fd); //TO_DO
+	close (fd);
 }
