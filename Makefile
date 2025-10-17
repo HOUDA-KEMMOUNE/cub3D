@@ -1,22 +1,34 @@
 NAME = cub3D
+LIBFT = libft/libft.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC = parsing_map.c main.c
-GNL_SRC = get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
-OBJ = $(SRC:.c=.o)
 
-all: $(NAME)
+SRC = parsing_map.c main.c
+
+GNL_SRC = get_next_line/get_next_line.c
+GNL_OBJ = $(GNL_SRC:.c=.o)
+
+ALL_SRC = $(SRC) $(GNL_SRC)
+OBJ = $(ALL_SRC:.c=.o)
+INCLUDES = -I. -I./libft -I./get_next_line
+
+all: $(LIBFT) $(NAME)
+
+$(LIBFT):
+	@make -C libft
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) -o $@
+$(NAME): $(OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) $(OBJ) -o $@ $(LIBFT)
 
 clean:
-	@rm -rf $(OBJ)
+	@rm -rf $(OBJ) $(GNL_OBJ)
+	@make clean -C libft
 
 fclean: clean
 	@rm -rf $(NAME)
+	@make fclean -C libft
 
 re: fclean all
