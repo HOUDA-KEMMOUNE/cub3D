@@ -23,4 +23,5 @@ int	main()
 		return (1);
 	}
 	printf("Good for u ;D\n");
+	parsing_map(fd, "map.cub"); //TO_DO
 }
