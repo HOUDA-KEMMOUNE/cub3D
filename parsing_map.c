@@ -12,6 +12,33 @@
 
 #include "cub.h"
 
+int	parse_fc_color(int fd)
+{
+	char	*line;
+	char	**s;
+	int		f;
+	int		c;
+
+	f = 0;
+	c = 0;
+	s = NULL;
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		s = ft_split(line, ' ');
+		if ((ft_strncmp(s[0], "F", 1) == 0) || (ft_strncmp(s[0], "C", 1) == 0))
+		{
+			if (ft_strncmp(s[0], "F", 1) == 0)
+				f = 1;
+			else
+				c = 1;
+		}
+	}
+	if (f == 1 && c == 1)
+		return (1);
+	printf("Invalid input for the floor/ceiling color :/\n");
+	return (0);
+}
+
 static int	check_path(char *path)
 {
 	int	fd;
@@ -22,7 +49,6 @@ static int	check_path(char *path)
 		return (0);
 	}
 	fd = open(path, O_RDONLY);
-	// printf("path -> {%s}\n", path);
 	if (fd < 0)
 	{
 		printf("Path doesn't exist :/\n");
@@ -33,16 +59,12 @@ static int	check_path(char *path)
 
 static int	first_word(char *word, char *path, int *count)
 {
-	// char	*new_path;
 
 	if ((ft_strncmp(word, "NO", 2) == 0) || (ft_strncmp(word, "SO", 2) == 0)
 		|| (ft_strncmp(word, "WE", 2) == 0) || (ft_strncmp(word, "EA", 2) == 0))
 	{
-		// new_path = ft_strtrim(path, "./");
 		if (check_path(path) == 0)
-		{
 			exit (1);
-		}
 		(*count)++;
 		free (path);
 		return ((*count));
@@ -70,9 +92,7 @@ int	parsing_map(int fd)
 		if (first_word(s[0], new_path, &count) == 0)
 		{
 			if (count == 4)
-			{
 				exit (0);
-			}
 		}
 	}
 	if (count != 4)
@@ -81,5 +101,6 @@ int	parsing_map(int fd)
 		exit (1);
 	}
 	free(line);
+	free(new_path);
 	return (0);
 }

@@ -26,5 +26,6 @@
 
 // --------- Parsing ----------------
 int     parsing_map(int fd);
+int	    parse_fc_color(int fd)
 
 # endif

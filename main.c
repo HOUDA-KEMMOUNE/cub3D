@@ -23,6 +23,8 @@ int	main()
 		return (1);
 	}
 	// printf("Good for u ;D\n");
-	parsing_map(fd); //TO_DO
+	parsing_map(fd);
+	parse_fc_color(fd);
+
 	close (fd);
 }
