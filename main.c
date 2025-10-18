@@ -23,8 +23,11 @@ int	main()
 		return (1);
 	}
 	// printf("Good for u ;D\n");
-	parsing_map(fd);
-	parse_fc_color(fd);
+	if (parsing_map(fd) == 1)
+		exit (1);
+	// printf("jmjj\n");
+	if (parse_fc_color(fd) == 0)
+		exit (1);
 
 	close (fd);
 }
