@@ -25,7 +25,7 @@
 # include <sys/wait.h>
 
 // --------- Parsing ----------------
-int     parsing_map(int fd);
-int	    parse_fc_color(int fd);
+int     parsing_directions(int fd);
+int	    parse_fc_color(char *file);
 
 # endif

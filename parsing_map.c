@@ -60,34 +60,28 @@ static int	parse_rgb(char *s)
 	return (1);
 }
 
-int	parse_fc_color(int fd)
+int	parse_fc_color(char *file)
 {
 	char	*line;
 	char	**s;
 	int		f;
 	int		c;
+	int		fd;
 
 	f = 0;
 	c = 0;
+	fd = open(file, O_RDONLY);
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		s = ft_split(line, ' ');
 		if ((ft_strncmp(s[0], "F", 1) == 0) || (ft_strncmp(s[0], "C", 1) == 0))
 		{
 			if (ft_strncmp(s[0], "F", 1) == 0)
-			{
 				f = 1;
-				// printf("s[1] --> %s\n", s[1]);
-				// printf("Debug\n");
-				if (parse_rgb(s[1]) == 0)
-					return (0);
-			}
 			else
-			{
 				c = 1;
-				if (parse_rgb(s[1]) == 0)
-					return (0);
-			}
+			if (parse_rgb(s[1]) == 0)
+				return (0);
 		}
 	}
 	if (f == 1 && c == 1)
@@ -114,48 +108,112 @@ static int	check_path(char *path)
 	return (1);
 }
 
-static int	first_word(char *word, char *path, int *count)
-{
+// static int	first_word(char *word, char *path, int *count)
+// {
+// 	(void)count;
+// 	int	so;
+// 	int	we;
+// 	int	ea;
+// 	int	no;
 
+// 	so = 0;
+// 	we = 0;
+// 	ea = 0;
+// 	no = 0;
+// 	if ((ft_strncmp(word, "NO", 2) == 0) || (ft_strncmp(word, "SO", 2) == 0)
+// 		|| (ft_strncmp(word, "WE", 2) == 0) || (ft_strncmp(word, "EA", 2) == 0))
+// 	{
+// 		// printf("test\n");
+// 		if (ft_strncmp(word, "NO", 2) == 0)
+// 		{
+// 			printf("no\n");
+// 			no = 1;
+// 		}
+// 		else if (ft_strncmp(word, "SO", 2) == 0)
+// 		{
+// 			printf("so\n");
+// 			so = 1;
+// 		}
+// 		else if (ft_strncmp(word, "EA", 2) == 0)
+// 		{
+// 			printf("ea\n");
+// 			ea = 1;
+// 		}
+// 		else if (ft_strncmp(word, "WE", 2) == 0)
+// 		{
+// 			printf("we\n");
+// 			we = 1;
+// 		}
+// 		if (check_path(path) == 0)
+// 			exit (1);
+// 		// (*count)++;
+// 		free (path);
+// 		// return ((*count));
+// 	}
+// 	if (no == 1 && so == 1 && ea == 1 && we == 1)
+// 	{
+// 		printf("Good!\n");
+// 		return (1);
+// 	}
+// 	printf("Invalid input\n");
+// 	return (0);
+// }
+
+static char	*first_word(char *word, char *path, int *count)
+{
+	(void)count;
 	if ((ft_strncmp(word, "NO", 2) == 0) || (ft_strncmp(word, "SO", 2) == 0)
 		|| (ft_strncmp(word, "WE", 2) == 0) || (ft_strncmp(word, "EA", 2) == 0))
 	{
 		if (check_path(path) == 0)
 			exit (1);
-		(*count)++;
 		free (path);
-		return ((*count));
+		return (word);
 	}
-	return (0);
+	return ("bad");
 }
 
 
-int	parsing_map(int fd)
+int	parsing_directions(int fd)
 {
 	int		count;
 	char	*line;
 	char	**s;
 	int		i;
 	char	*new_path;
+	char	*res;
+	int		direc[4];
 
 	i = 0;
 	count = 0;
+	while (i < 4)
+	{
+		direc[i] = 0;
+		i++;
+	}
 	while ((line = get_next_line(fd)) != NULL)
 	{
 		s = ft_split(line, ' ');
 		new_path = ft_strtrim(s[1], "\n");
-		// if (new_path[0] == '\0')
-		// 	printf("new path --> {%s}\n", new_path);
-		if (first_word(s[0], new_path, &count) == 0)
-		{
-			if (count == 4)
-				return (0);
-		}
+		res = first_word(s[0], new_path, &count);
+		if (ft_strncmp(res, "SO", 2) == 0)
+			direc[0] = 1;
+		else if (ft_strncmp(res, "WE", 2) == 0)
+			direc[1] = 1;
+		else if (ft_strncmp(res, "EA", 2) == 0)
+			direc[2] = 1;
+		else if (ft_strncmp(res, "NO", 2) == 0)
+			direc[3] = 1;
 	}
-	if (count != 4)
+	i = 0;
+	while (i < 4)
 	{
-		printf("Invalid map :/\n");
-		exit (1);
+		if (direc[i] == 0)
+		{
+			printf("issue\n");
+			exit (1);
+		}
+		i++;
 	}
 	free(line);
 	free(new_path);

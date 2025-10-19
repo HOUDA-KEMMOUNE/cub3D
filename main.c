@@ -23,11 +23,14 @@ int	main()
 		return (1);
 	}
 	// printf("Good for u ;D\n");
-	if (parsing_map(fd) == 1)
+	if (parsing_directions(fd) == 1)
+	{
+		close(fd);
 		exit (1);
+	}
+	close (fd);
 	// printf("jmjj\n");
-	if (parse_fc_color(fd) == 0)
+	if (parse_fc_color("map.cub") == 0)
 		exit (1);
 
-	close (fd);
 }
