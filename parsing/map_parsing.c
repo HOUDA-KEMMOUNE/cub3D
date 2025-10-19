@@ -1,33 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   map_parsing.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkemmoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/16 16:38:51 by hkemmoun          #+#    #+#             */
-/*   Updated: 2025/10/16 16:38:54 by hkemmoun         ###   ########.fr       */
+/*   Created: 2025/10/19 23:44:20 by hkemmoun          #+#    #+#             */
+/*   Updated: 2025/10/19 23:44:21 by hkemmoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing/parsing.h"
+#include "parsing.h"
 
-int	main(void)
+int	map_parsing(char *file_name)
 {
 	int	fd;
 
-	fd = open("map.cub", O_RDONLY);
+	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("Not a valid file :/\n");
-		return (1);
-	}
-	if (parsing_directions(fd) == 1)
-	{
-		close(fd);
+		printf("File doesn't exist :/\n");
 		exit (1);
 	}
-	close (fd);
-	if (parse_fc_color("map.cub") == 0)
-		exit (1);
+	
 }

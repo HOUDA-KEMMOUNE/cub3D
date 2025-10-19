@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub.h                                              :+:      :+:    :+:   */
+/*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hkemmoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/16 16:53:33 by hkemmoun          #+#    #+#             */
-/*   Updated: 2025/10/16 16:53:33 by hkemmoun         ###   ########.fr       */
+/*   Created: 2025/10/19 23:47:24 by hkemmoun          #+#    #+#             */
+/*   Updated: 2025/10/19 23:47:29 by hkemmoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB_H
-# define CUB_H
+#ifndef PARSING_H
+# define PARSING_H
 
 # include "./libft/libft.h"
 # include "./get_next_line/get_next_line.h"
@@ -35,5 +35,6 @@ char	*first_word(char *word, char *path);
 char	*parsing_directions_helper(char *line, int *direc);
 void	check_directions(int *direc);
 int		parsing_directions(int fd);
+int	    map_parsing(char *file_name);
 
 #endif

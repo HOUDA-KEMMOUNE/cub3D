@@ -3,14 +3,14 @@ LIBFT = libft/libft.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = main.c parsing_color.c parsing_directions.c
+SRC = main.c parsing/parsing_color.c parsing/parsing_directions.c
 
 GNL_SRC = get_next_line/get_next_line.c
 GNL_OBJ = $(GNL_SRC:.c=.o)
 
 ALL_SRC = $(SRC) $(GNL_SRC)
 OBJ = $(ALL_SRC:.c=.o)
-INCLUDES = -I. -I./libft -I./get_next_line
+INCLUDES = -I. -I./libft -I./get_next_line -I./parsing
 
 all: $(LIBFT) $(NAME)
 
