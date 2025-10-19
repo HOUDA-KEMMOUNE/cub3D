@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef CUB_H
+#ifndef CUB_H
 # define CUB_H
 
 # include "./libft/libft.h"
@@ -25,7 +25,15 @@
 # include <sys/wait.h>
 
 // --------- Parsing ----------------
-int     parsing_directions(int fd);
-int	    parse_fc_color(char *file);
+int		rgb_size(char **rgb);
+int		check_range(int color_id);
+int		parse_rgb(char *s);
+int		parse_fc_color_helper(int *f, int *c, char *line);
+int		parse_fc_color(char *file);
+int		check_path(char *path);
+char	*first_word(char *word, char *path);
+char	*parsing_directions_helper(char *line, int *direc);
+void	check_directions(int *direc);
+int		parsing_directions(int fd);
 
-# endif
+#endif

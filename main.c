@@ -12,7 +12,7 @@
 
 #include "cub.h"
 
-int	main()
+int	main(void)
 {
 	int	fd;
 
@@ -22,15 +22,12 @@ int	main()
 		printf("Not a valid file :/\n");
 		return (1);
 	}
-	// printf("Good for u ;D\n");
 	if (parsing_directions(fd) == 1)
 	{
 		close(fd);
 		exit (1);
 	}
 	close (fd);
-	// printf("jmjj\n");
 	if (parse_fc_color("map.cub") == 0)
 		exit (1);
-
 }

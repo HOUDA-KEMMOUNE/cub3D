@@ -3,7 +3,7 @@ LIBFT = libft/libft.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = parsing_map.c main.c
+SRC = main.c parsing_color.c parsing_directions.c
 
 GNL_SRC = get_next_line/get_next_line.c
 GNL_OBJ = $(GNL_SRC:.c=.o)
