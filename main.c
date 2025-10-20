@@ -30,4 +30,6 @@ int	main(void)
 	close (fd);
 	if (parse_fc_color("map.cub") == 0)
 		exit (1);
+	map_parsing("map.cub");
+	
 }

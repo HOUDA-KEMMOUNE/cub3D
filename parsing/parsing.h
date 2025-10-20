@@ -35,6 +35,7 @@ char	*first_word(char *word, char *path);
 char	*parsing_directions_helper(char *line, int *direc);
 void	check_directions(int *direc);
 int		parsing_directions(int fd);
+int	    check_line(char *line);
 int	    map_parsing(char *file_name);
 
 // ----------- utils -----------
