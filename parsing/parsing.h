@@ -37,4 +37,7 @@ void	check_directions(int *direc);
 int		parsing_directions(int fd);
 int	    map_parsing(char *file_name);
 
+// ----------- utils -----------
+void	free_split(char **s);
+
 #endif

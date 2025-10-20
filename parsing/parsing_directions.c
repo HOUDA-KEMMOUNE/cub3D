@@ -62,6 +62,7 @@ char	*parsing_directions_helper(char *line, int *direc)
 		direc[2] = 1;
 	else if (ft_strncmp(res, "NO", 2) == 0)
 		direc[3] = 1;
+	free_split(s);
 	return (new_path);
 }
 
@@ -105,5 +106,6 @@ int	parsing_directions(int fd)
 	check_directions(&direc[0]);
 	free(line);
 	free(new_path);
+	close (fd);
 	return (0);
 }

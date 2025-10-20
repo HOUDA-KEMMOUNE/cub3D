@@ -1,7 +1,7 @@
-SO ./haha/path_to_the_south_texture
-WE ./haha/path_to_the_west_texture
-EA ./haha/path_to_the_east_texture
-NO ./haha/path_to_the_north_texture
+SO ./directions/path_to_the_south_texture
+WE ./directions/path_to_the_west_texture
+EA ./directions/path_to_the_east_texture
+NO ./directions/path_to_the_north_texture
 
 
 F 220,100,255

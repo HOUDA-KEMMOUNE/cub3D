@@ -12,85 +12,79 @@
 
 #include "libft.h"
 
-static int	word_count(const char *s, char c)
+static int	word_counter(char const *s, char c)
 {
 	int	i;
 	int	count;
 
 	i = 0;
 	count = 0;
-	while (s[i])
+	while (s && s[i])
 	{
-		while (s[i] == c)
+		while (s[i] && s[i] == c)
 			i++;
-		if (s[i] != '\0')
+		if (s[i])
 		{
 			count++;
-			while (s[i] != c && s[i])
+			while (s[i] && s[i] != c)
 				i++;
 		}
 	}
 	return (count);
 }
 
-static char	**ft_free(char **res, int j)
+static int	length_counter(char const *s, char c, int i)
 {
-	if (j == 0)
-		free (res[j]);
-	else
+	int	count;
+
+	count = 0;
+	while (s[i] && s[i] != c)
 	{
-		while (j >= 0)
-		{
-			free (res[j]);
-			j--;
-		}
+		i++;
+		count++;
 	}
-	free (res);
+	return (count);
+}
+
+char	**free_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 	return (NULL);
 }
 
-static char	**fill(const char *str, char c, char **res)
+char	**ft_split(char const *s, char c)
 {
-	int	start;
-	int	i;
-	int	j;
+	int		word_count;
+	int		i;
+	int		j;
+	char	**arr;
 
 	i = 0;
 	j = 0;
-	while (str[i])
+	word_count = word_counter(s, c);
+	arr = malloc((word_count + 1) * sizeof(char *));
+	if (!arr || !s)
+		return (free(arr), NULL);
+	while (s[i])
 	{
-		while (str[i] == c)
+		while (s[i] && s[i] == c)
 			i++;
-		if (str[i] == '\0')
-			break ;
-		start = i;
-		while (str[i] != c && str[i])
+		if (s[i])
+		{
+			arr[j] = ft_substr(s, i, length_counter(s, c, i));
+			if (!arr[j++])
+				return (free_arr(arr));
+		}
+		while (s[i] && s[i] != c)
 			i++;
-		res[j] = malloc(sizeof(char) * (i - start + 1));
-		if (!res[j])
-			return (ft_free(res, j - 1));
-		ft_strlcpy(res[j], str + start, i - start + 1);
-		j++;
 	}
-	res[j] = NULL;
-	return (res);
-}
-
-char	**ft_split(const char *str, char c)
-{
-	char	**res;
-	int		count;
-
-	if (!str)
-		return (NULL);
-	count = word_count(str, c);
-	res = malloc(sizeof(char *) * (count + 1));
-	if (!res)
-		return (NULL);
-	if (count == 0)
-	{
-		res[0] = NULL;
-		return (res);
-	}
-	return (fill(str, c, res));
+	return (arr[j] = NULL, arr);
 }
