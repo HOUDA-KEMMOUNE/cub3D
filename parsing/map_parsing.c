@@ -32,7 +32,6 @@ int	map_parsing(char *file_name)
 	if (fd < 0)
 	{
 		printf("File doesn't exist :/\n");
-		close (fd);
 		exit (1);
 	}
 	line = get_next_line(fd);
