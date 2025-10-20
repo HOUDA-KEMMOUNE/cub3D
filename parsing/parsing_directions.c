@@ -36,8 +36,10 @@ char	*first_word(char *word, char *path)
 		|| (ft_strncmp(word, "WE", 2) == 0) || (ft_strncmp(word, "EA", 2) == 0))
 	{
 		if (check_path(path) == 0)
+		{
+			free (path);
 			exit (1);
-		free (path);
+		}
 		return (word);
 	}
 	return ("bad");
@@ -48,9 +50,7 @@ char	*parsing_directions_helper(char *line, int *direc)
 	char	**s;
 	char	*new_path;
 	char	*res;
-	int		i;
 
-	i = 0;
 	s = ft_split(line, ' ');
 	new_path = ft_strtrim(s[1], "\n");
 	res = first_word(s[0], new_path);
@@ -84,14 +84,14 @@ void	check_directions(int *direc)
 
 int	parsing_directions(int fd)
 {
-	int		count;
+	//int		count;
 	char	*line;
 	int		i;
 	char	*new_path;
 	int		direc[4];
 
 	i = 0;
-	count = 0;
+	//count = 0;
 	while (i < 4)
 	{
 		direc[i] = 0;
@@ -101,11 +101,11 @@ int	parsing_directions(int fd)
 	while (line != NULL)
 	{
 		new_path = parsing_directions_helper(line, &direc[0]);
+		free(line);
+		free(new_path);
 		line = get_next_line(fd);
 	}
 	check_directions(&direc[0]);
-	free(line);
-	free(new_path);
 	close (fd);
 	return (0);
 }

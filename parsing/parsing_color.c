@@ -26,7 +26,6 @@ int	rgb_size(char **rgb)
 		printf("You should enter 3 clors (red,green,blue)\n");
 		return (0);
 	}
-	free_split(rgb);
 	return (1);
 }
 
@@ -46,7 +45,10 @@ int	parse_rgb(char *s)
 
 	rgb = ft_split(s, ',');
 	if (rgb_size(rgb) == 0)
+	{
+		free_split(rgb);
 		return (0);
+	}
 	i = 0;
 	while (i < 3)
 	{
@@ -91,13 +93,17 @@ int	parse_fc_color(char *file)
 	while (line != NULL)
 	{
 		if (parse_fc_color_helper(&f, &c, line) == 0)
+		{
+			free(line);
+			close (fd);
 			return (0);
+		}
+		free (line);
 		line = get_next_line(fd);
 	}
+	close (fd);
 	if (f == 1 && c == 1)
 		return (1);
 	printf("Invalid input for the floor/ceiling color :/\n");
-	free (line);
-	close (fd);
 	return (0);
 }
