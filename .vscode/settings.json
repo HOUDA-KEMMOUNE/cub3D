@@ -1,5 +1,13 @@
 {
     "files.associations": {
-        "cub.h": "c"
+        "cub.h": "c",
+        "array": "c",
+        "memory": "c",
+        "format": "c",
+        "istream": "c",
+        "functional": "c",
+        "tuple": "c",
+        "utility": "c",
+        "variant": "c"
     }
 }
