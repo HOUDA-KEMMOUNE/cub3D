@@ -24,6 +24,16 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 
+// --------- struct for the maze ----------
+
+typedef struct s_maze
+{
+    char    *first_line;
+    int     count;
+    char    current_char;
+}               t_maze;
+
+
 // --------- Parsing ----------------
 int		rgb_size(char **rgb);
 int		check_range(int color_id);
@@ -37,6 +47,8 @@ void	check_directions(int *direc);
 int		parsing_directions(int fd);
 int	    check_line(char *line);
 int	    map_parsing(char *file_name);
+void    maze_init(t_maze *maze);
+
 
 // ----------- utils -----------
 void	free_split(char **s);
