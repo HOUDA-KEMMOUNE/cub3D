@@ -30,16 +30,8 @@ int	skip_spaces(char *line)
 			break;
 		if ((line[i] >= 9 && line[i] <= 13) || line[i] == ' ')
 			i++;
-		else if (line[i] == '1')
-		{
-			free (line);
-			break;
-		}
 		else
-		{
-			free (line);
-			exit (1);
-		}
+			break ;
 	}
 	return (i);
 }
@@ -49,35 +41,13 @@ int	check_first_line(char *line)
 	int	i;
 
 	i = 0;
-	// while (line[i])
-	// {
-	// 	if (line[i] == '\n')
-	// 		break;
-	// 	if ((line[i] >= 9 && line[i] <= 13) || line[i] == ' ')
-	// 		i++;
-	// 	else if (line[i] == '1')
-	// 	{
-	// 		free (line);
-	// 		break;
-	// 	}
-	// 	else
-	// 	{
-	// 		free (line);
-	// 		exit (1);
-	// 	}
-	// }
+	
 	i = skip_spaces(line);
-	while (line[i])
+	while (line[i] && line[i] != '\n')
 	{
-		if (line[i] == '\n')
-		{
-			free(line);
-			break;
-		}
 		if (line[i] != '1')
 		{
 			printf("The first line in the map should contain just 1\n");
-			free(line);
 			exit(1);
 		}
 		i++;
@@ -94,6 +64,11 @@ int	check_map_mid(char *line)
 	i = 0;
 	v = 0;
 	i = skip_spaces(line);
+	if (line[i] == '\0' || line[i] == '\n')
+    {
+        printf("Invalid empty map line\n");
+        exit(1);
+    }
 	while (line[i])
 	{
 		if (line[i] == '\n')
@@ -125,11 +100,9 @@ int	check_map_mid(char *line)
 
 int	count_map_lines(int fd)
 {
-	int		i;
 	int		count;
 	char	*line;
 
-	i = 0;
 	count = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
@@ -164,22 +137,14 @@ int	map_parsing(char *file_name)
 	while (line != NULL)
 	{
 		if (check_line(line) == 1)
-		{
-			close(fd);
 			break ;
-		}
 		free(line);
 		line = get_next_line(fd);
 	}
-	close (fd);
 	check_first_line(line);
-	printf ("lala\n");
-	count = count_map_lines(fd);
-	// printf("line --> %s\n", line);
-	// while (line != NULL)
-	// {
-
-	// }
+	count = 1 + count_map_lines(fd);
 	free(line);
+	close(fd);
+	printf("count --> %d\n", count);
 	return (100);
 }
