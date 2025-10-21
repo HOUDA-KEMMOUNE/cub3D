@@ -121,15 +121,13 @@ int	map_parsing(char *file_name)
 {
 	int		fd;
 	char	*line;
-	char	*copy_line;
+	// char	*copy_line;
 	// int		count;
 	t_maze	*maze;
 
 	fd = open(file_name, O_RDONLY);
 	maze = malloc(sizeof(t_maze));
 	maze_init(maze);
-	printf("maze->count --> %d\n", maze->count);
-	printf("maze->current_char --> %c\n", maze->current_char);
 	if (fd < 0)
 	{
 		printf("File doesn't exist :/\n");
@@ -144,15 +142,10 @@ int	map_parsing(char *file_name)
 		line = get_next_line(fd);
 	}
 	check_first_line(line);
-	printf("Line --> %s\n", line);
-	copy_line = line;
-	maze->first_line = copy_line;
-	printf("maze->first_line ==> %s\n", maze->first_line);
-	printf("copy_line ==> %s\n", copy_line);
+	maze->first_line = line;
 	maze->count = 1 + count_map_lines(fd);
+	print_maze_struct(maze);
 	free(line);
 	close(fd);
-	printf("maze->count ==> %d\n", maze->count);
-	printf("maze->first_line ==> %s\n", maze->first_line);
 	return (100);
 }

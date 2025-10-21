@@ -48,7 +48,7 @@ int		parsing_directions(int fd);
 int	    check_line(char *line);
 int	    map_parsing(char *file_name);
 void    maze_init(t_maze *maze);
-
+void	print_maze_struct(t_maze *maze);
 
 // ----------- utils -----------
 void	free_split(char **s);
