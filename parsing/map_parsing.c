@@ -52,7 +52,6 @@ int	check_first_line(char *line)
 		}
 		i++;
 	}
-	// free(line);
 	return (0);
 }
 
@@ -77,13 +76,14 @@ int	check_map_mid(char *line)
 		{
 			if (line[i] != '1')
 			{
+				printf("jf\n");
 				printf("The maze should be rounded with 1s\n");
 				free (line);
 				exit(1);
 
 			}
 		}
-		if (line[i] == '1' && v == 0)
+		if (line[i] != '1' && v == 0)
 		{
 			if (line[i] != 1)
 			{
@@ -115,10 +115,6 @@ int	count_map_lines(int fd)
 		line = get_next_line(fd);
 	}
 	return (count);
-	// while (line != NULL)
-	// {
-	// 	// if ()
-	// }
 }
 
 int	map_parsing(char *file_name)
