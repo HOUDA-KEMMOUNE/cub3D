@@ -117,15 +117,32 @@ int	count_map_lines(int fd)
 	return (count);
 }
 
+void	map_filling(t_maze *maze, int fd)
+{
+	char	*line;
+
+	//line = maze->first_line;
+	line = get_next_line(fd);
+	while ((line != NULL) && (ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line) != 0)))
+	{
+		// if (ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line) == 0))
+		// 	break ;
+		line = get_next_line(fd);
+	}
+	printf("line --> %s\n", line);
+}
+
 int	map_parsing(char *file_name)
 {
 	int		fd;
+	//int		fd_copy;
 	char	*line;
 	// char	*copy_line;
 	// int		count;
 	t_maze	*maze;
 
 	fd = open(file_name, O_RDONLY);
+	//fd_copy = fd;
 	maze = malloc(sizeof(t_maze));
 	maze_init(maze);
 	if (fd < 0)
@@ -144,8 +161,12 @@ int	map_parsing(char *file_name)
 	check_first_line(line);
 	maze->first_line = line;
 	maze->count = 1 + count_map_lines(fd);
-	print_maze_struct(maze);
-	free(line);
 	close(fd);
+	//print_maze_struct(maze);
+	fd = open(file_name, O_RDONLY);
+
+	map_filling(maze, fd);
+	free(line);
+	//close(fd);
 	return (100);
 }

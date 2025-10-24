@@ -31,6 +31,7 @@ typedef struct s_maze
     char    *first_line;
     int     count;
     char    current_char;
+    char    **map;
 }               t_maze;
 
 
