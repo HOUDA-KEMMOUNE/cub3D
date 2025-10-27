@@ -15,14 +15,14 @@
 void	print_maze_struct(t_maze *maze)
 {
 	printf("maze->first_line ==> %s\n", maze->first_line);
-	printf("maze->count ==> %d\n", maze->count);
+	printf("maze->column ==> %d\n", maze->column);
 	printf("maze->current_char ==> %c\n", maze->current_char);
 }
 
 void	maze_init(t_maze *maze)
 {
 	maze->first_line = NULL;
-	maze->count = 0;
+	maze->column = 0;
 	maze->max_row = 0;
 	maze->current_char = '1';
 	maze->map = NULL;

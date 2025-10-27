@@ -29,7 +29,7 @@
 typedef struct s_maze
 {
     char    *first_line;
-    int     count;
+    int     column;
     int     max_row;
     char    current_char;
     char    **map;

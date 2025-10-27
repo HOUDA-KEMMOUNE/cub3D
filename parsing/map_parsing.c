@@ -190,7 +190,7 @@ int	map_parsing(char *file_name)
 	}
 	check_first_line(line);
 	maze->first_line = line;
-	maze->count = 1 + count_map_lines(fd);
+	maze->column = 1 + count_map_lines(fd);
 	close(fd);
 	//print_maze_struct(maze);
 	fd = open(file_name, O_RDONLY);
