@@ -76,7 +76,6 @@ int	check_map_mid(char *line)
 		{
 			if (line[i] != '1')
 			{
-				printf("jf\n");
 				printf("The maze should be rounded with 1s\n");
 				free (line);
 				exit(1);
@@ -117,6 +116,38 @@ int	count_map_lines(int fd)
 	return (count);
 }
 
+void	maze_max_row(t_maze *maze, int fd, char *line)
+{
+	int	max;
+	int	count;
+	int	i;
+
+	max = 0;
+	count = 0;
+	i = 0;
+	//printf("line --> %s\n", line);
+	while (line != NULL)
+	{
+		while (line[i] != '\n')
+		{
+			if (line[i] == '\0')
+				break ;
+			if (!((line[i] >= 9 && line[i] <= 13) || line[i] == ' '))
+				count++;
+			i++;
+		}
+		if (max < count)
+			max = count;
+		//printf("max --> %d\n", max);
+		//printf("count --> %d\n", count);
+		//printf("line --> %s\n", line);
+		count = 0;
+		i = 0;
+		line = get_next_line(fd);
+	}
+	maze->max_row = max;
+}
+
 void	map_filling(t_maze *maze, int fd)
 {
 	char	*line;
@@ -125,11 +156,10 @@ void	map_filling(t_maze *maze, int fd)
 	line = get_next_line(fd);
 	while ((line != NULL) && (ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line) != 0)))
 	{
-		// if (ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line) == 0))
-		// 	break ;
 		line = get_next_line(fd);
 	}
-	printf("line --> %s\n", line);
+	maze_max_row(maze, fd, line);
+	printf("maze->max_row --> %d\n", maze->max_row);
 }
 
 int	map_parsing(char *file_name)

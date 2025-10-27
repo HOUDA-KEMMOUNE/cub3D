@@ -23,6 +23,7 @@ void	maze_init(t_maze *maze)
 {
 	maze->first_line = NULL;
 	maze->count = 0;
+	maze->max_row = 0;
 	maze->current_char = '1';
 	maze->map = NULL;
 }

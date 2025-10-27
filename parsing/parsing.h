@@ -30,6 +30,7 @@ typedef struct s_maze
 {
     char    *first_line;
     int     count;
+    int     max_row;
     char    current_char;
     char    **map;
 }               t_maze;
