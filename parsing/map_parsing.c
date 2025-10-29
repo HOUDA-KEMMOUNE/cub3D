@@ -132,8 +132,8 @@ void	maze_max_row(t_maze *maze, int fd, char *line)
 		{
 			if (line[i] == '\0')
 				break ;
-			if (!((line[i] >= 9 && line[i] <= 13) || line[i] == ' '))
-				count++;
+			// if (!((line[i] >= 9 && line[i] <= 13) || line[i] == ' '))
+			count++;
 			i++;
 		}
 		if (max < count)
@@ -148,119 +148,62 @@ void	maze_max_row(t_maze *maze, int fd, char *line)
 	maze->max_row = max;
 }
 
-void	map_filling(t_maze *maze, int fd)
+void	map_array(t_maze *maze, int row, int column, int fd)
 {
 	char	*line;
+	char	map[column][row + 1];
+	int		x;
+	int		y;
+
+	line = get_next_line(fd);
+    line = get_next_line(fd);
+	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
+		line = get_next_line(fd);
+    y = 0;
+    while (line != NULL && y < column)
+    {
+        x = 0;
+        while (x < row)
+        {
+            if (line[x] == '\n' || line[x] == '\0')
+            {
+                while (x < row)
+                {
+                    map[y][x] = '0';
+                    x++;
+                }
+                break ;
+            }
+            map[y][x] = line[x];
+            x++;
+        }
+        map[y][row] = '\0';
+        printf("map[%d] --> %s\n", y, map[y]);
+        y++;
+        line = get_next_line(fd);
+    }
+}
+
+void	map_filling(t_maze *maze, int fd, char *file)
+{
+	char	*line;
+	int		row;
+	int		column;
 
 	//line = maze->first_line;
 	line = get_next_line(fd);
-	while ((line != NULL) && (ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line) != 0)))
+	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
 	{
 		line = get_next_line(fd);
 	}
 	maze_max_row(maze, fd, line);
-	printf("maze->max_row --> %d\n", maze->max_row);
-}
-
-void	check_single_player(int n, int s, int e, int w)
-{
-	if ((n == 1) && (s == 1 || e == 1 || w == 1) )
-	{
-		printf("The player should be spawn in a single place\n");
-		exit (1);
-	}
-	if ((s == 1) && (n == 1 || e == 1 || w == 1) )
-	{
-		printf("The player should be spawn in a single place\n");
-		exit (1);
-	}
-	if ((e == 1) && (s == 1 || n == 1 || w == 1) )
-	{
-		printf("The player should be spawn in a single place\n");
-		exit (1);
-	}
-	if ((w == 1) && (s == 1 || e == 1 || n == 1) )
-	{
-		printf("The player should be spawn in a single place\n");
-		exit (1);
-	}
-}
-
-void	check_characters(int fd, char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line != NULL)
-	{
-		while (line[i] != '\n')
-		{
-			if (line[i] == '\0')
-				break ;
-			if ((!((line[i] >= 9 && line[i] <= 13) || line[i] == ' '))
-				&& (line[i] != '0') && (line[i] != '1') && (line[i] != 's')
-				&& (line[i] != 'n') && (line[i] != 'e') && (line[i] != 'w'))
-			{
-				printf("Invalid character :/\n");
-				exit (1);
-			}
-			i++;
-		}
-		i = 0;
-		line = get_next_line(fd);
-	}
-}
-
-void	parse_spawn_player(t_maze *maze, int fd)
-{
-	//  N,S,E or W
-	char	*line;
-	int		n;
-	int		s;
-	int		e;
-	int		w;
-	int		i;
-
-	line = maze->first_line;
-	check_characters(fd, line);
-	n = 0;
-	s = 0;
-	e = 0;
-	w = 0;
-	i = 0;
-	printf("line --> %s\n", line);
-	while (line != NULL)
-	{
-		printf("re\n");
-		printf("line --> %s\n", line);
-		while (line[i] != '\n')
-		{
-			if (line[i] == '\0')
-				break ;
-			if (line[i] == 'N')
-				n++;
-			else if (line[i] == 'E')
-				e++;
-			else if (line[i] == 'S')
-				s++;
-			else if (line[i] == 'W')
-				w++;
-			i++;
-		}
-		i = 0;
-		line = get_next_line(fd);
-	}
-	if (n > 1 || s > 1 || e > 1 || w > 1)
-	{
-		printf("The player should be spawn in a single place\n");
-		exit (1);
-	}
-	if (n == 0 && s == 0 && e == 0 && w == 0)
-	{
-		printf("The player should be spawned somewhere in the map\n");
-		exit (1);
-	}
-	check_single_player(n, s, e, w);
+	row = maze->max_row;
+	column = maze->column;
+    close (fd);
+    fd = open(file, O_RDONLY);
+	map_array(maze, row, column, fd);
+	printf("row --> %d\n", row);
+	printf("column --> %d\n", column);
 }
 
 int	map_parsing(char *file_name)
@@ -292,12 +235,11 @@ int	map_parsing(char *file_name)
 	check_first_line(line);
 	maze->first_line = line;
 	maze->column = 1 + count_map_lines(fd);
-	parse_spawn_player(maze, fd);
 	close(fd);
 	//print_maze_struct(maze);
 	fd = open(file_name, O_RDONLY);
 
-	map_filling(maze, fd);
+	map_filling(maze, fd, file_name);
 	free(line);
 	//close(fd);
 	return (100);
