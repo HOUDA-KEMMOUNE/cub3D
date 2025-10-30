@@ -47,6 +47,7 @@ int	check_first_line(char *line)
 	{
 		if (line[i] != '1')
 		{
+			printf("Error\n");
 			printf("The first line in the map should contain just 1\n");
 			exit(1);
 		}
@@ -65,6 +66,7 @@ int	check_map_mid(char *line)
 	i = skip_spaces(line);
 	if (line[i] == '\0' || line[i] == '\n')
     {
+		printf("Error\n");
         printf("Invalid empty map line\n");
         exit(1);
     }
@@ -76,6 +78,7 @@ int	check_map_mid(char *line)
 		{
 			if (line[i] != '1')
 			{
+				printf("Error\n");
 				printf("The maze should be rounded with 1s\n");
 				free (line);
 				exit(1);
@@ -86,6 +89,7 @@ int	check_map_mid(char *line)
 		{
 			if (line[i] != 1)
 			{
+				printf("Error\n");
 				printf("The maze should be rounded with 1s\n");
 				free (line);
 				exit(1);
@@ -107,9 +111,7 @@ int	count_map_lines(int fd)
 	while (line != NULL)
 	{
 		if (check_map_mid(line) == 1)
-		{
 			count++;
-		}
 		free (line);
 		line = get_next_line(fd);
 	}
@@ -168,7 +170,7 @@ void	map_array(t_maze *maze, int row, int column, int fd)
 	int		y;
 
 	filling_struct_map(maze, row, column);
-	line = get_next_line(fd);
+	// line = get_next_line(fd);
     line = get_next_line(fd);
 	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
 		line = get_next_line(fd);

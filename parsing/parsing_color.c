@@ -104,6 +104,7 @@ int	parse_fc_color(char *file)
 	close (fd);
 	if (f == 1 && c == 1)
 		return (1);
+	printf("Error\n");
 	printf("Invalid input for the floor/ceiling color :/\n");
 	return (0);
 }

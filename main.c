@@ -19,6 +19,7 @@ int	main(void)
 	fd = open("map.cub", O_RDONLY);
 	if (fd < 0)
 	{
+		printf("Error\n");
 		printf("Not a valid file :/\n");
 		return (1);
 	}

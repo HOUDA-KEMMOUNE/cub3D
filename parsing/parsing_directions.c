@@ -18,12 +18,14 @@ int	check_path(char *path)
 
 	if (path[0] == '\0')
 	{
+		printf("Error\n");
 		printf("Write something in the path please :/\n");
 		return (0);
 	}
 	fd = open(path, O_RDONLY);
 	if (fd < 0)
 	{
+		printf("Error\n");
 		printf("Path doesn't exist :/\n");
 		return (0);
 	}
@@ -75,6 +77,7 @@ void	check_directions(int *direc)
 	{
 		if (direc[i] == 0)
 		{
+			printf("Error\n");
 			printf("Check if you have: SO,WE,EA,NO in your file\n");
 			exit (1);
 		}
