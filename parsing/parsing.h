@@ -62,6 +62,7 @@ int	    map_parsing(char *file_name);
 void    maze_init(t_maze *maze);
 void	print_maze_struct(t_maze *maze);
 void	flags_init(t_flags *flags);
+int	    skip_spaces_helper(char *s, int *px);
 
 // ----------- utils -----------
 void	free_split(char **s);

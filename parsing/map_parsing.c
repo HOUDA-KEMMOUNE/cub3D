@@ -45,13 +45,14 @@ int	check_first_line(char *line)
 	i = skip_spaces(line);
 	while (line[i] && line[i] != '\n')
 	{
-		if (line[i] != '1')
+		if (line[i] == '1' || line[i] == ' ' || line[i] == '\t')
+			i++;
+		else
 		{
 			printf("Error\n");
 			printf("The first line in the map should contain just 1\n");
 			exit(1);
 		}
-		i++;
 	}
 	return (0);
 }
@@ -127,22 +128,17 @@ void	maze_max_row(t_maze *maze, int fd, char *line)
 	max = 0;
 	count = 0;
 	i = 0;
-	//printf("line --> %s\n", line);
 	while (line != NULL)
 	{
 		while (line[i] != '\n')
 		{
 			if (line[i] == '\0')
 				break ;
-			// if (!((line[i] >= 9 && line[i] <= 13) || line[i] == ' '))
 			count++;
 			i++;
 		}
 		if (max < count)
 			max = count;
-		//printf("max --> %d\n", max);
-		//printf("count --> %d\n", count);
-		//printf("line --> %s\n", line);
 		count = 0;
 		i = 0;
 		line = get_next_line(fd);
@@ -170,7 +166,6 @@ void	map_array(t_maze *maze, int row, int column, int fd)
 	int		y;
 
 	filling_struct_map(maze, row, column);
-	// line = get_next_line(fd);
     line = get_next_line(fd);
 	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
 		line = get_next_line(fd);
@@ -193,7 +188,6 @@ void	map_array(t_maze *maze, int row, int column, int fd)
             x++;
         }
         maze->map[y][row] = '\0';
-        // printf("maze->map[%d] --> %s\n", y, maze->map[y]);
         y++;
         line = get_next_line(fd);
     }
@@ -206,20 +200,15 @@ void	map_filling(t_maze *maze, int fd, char *file)
 	int		row;
 	int		column;
 
-	//line = maze->first_line;
 	line = get_next_line(fd);
 	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
-	{
 		line = get_next_line(fd);
-	}
 	maze_max_row(maze, fd, line);
 	row = maze->max_row;
 	column = maze->column;
     close (fd);
     fd = open(file, O_RDONLY);
 	map_array(maze, row, column, fd);
-	// printf("row --> %d\n", row);
-	// printf("column --> %d\n", column);
 }
 
 void	print_map(t_maze *maze)
@@ -243,7 +232,6 @@ void	invalid_character(char **map)
 		x = 0;
 		while (map[y][x] != '\0')
 		{
-			// printf("map[%d][%d] --> %c\n", y, x, map[y][x]);
 			if (map[y][x] == ' ' || map[y][x] == '\t' || map[y][x] == '*' || map[y][x] == '1'
 			   || map[y][x] == '0' || map[y][x] == 'N' || map[y][x] == 'S'
 			   || map[y][x] == 'E' || map[y][x] == 'W')
@@ -318,21 +306,116 @@ void	spawn_check(t_maze *maze, char **map)
 	check_multi_player(spawn_char);
 }
 
+void	parse_space_error_msg(void)
+{
+	printf("Error\n");
+	printf("Space should be rounded by 1s or spaces\n");
+}
+
+void	parse_space(char **map, int cx, int cy)
+{
+	int	x;
+	int	y;
+
+	// touch parse_space_cases ondir l cases on3ayat 3lihom hna
+	x = cx;
+	y = cy;
+	// printf("map[y][x] -> %c\n",map[y][x]);
+	// printf("map[y - 1][x] -> %c\n",map[y - 1][x]);
+	// printf("map[y + 1][x] -> %c\n",map[y + 1][x]);
+	// printf("map[y][x + 1] -> %c\n",map[y][+ 1]);
+	// printf("map[y][x - 1] -> %c\n",map[y][x - 1]);
+	// printf("map[y + 1][x + 1] -> %c\n",map[y + 1][x + 1]);
+	// printf("map[y + 1][x - 1] -> %c\n",map[y + 1][x - 1]);
+	// printf("map[y - 1][x + 1] -> %c\n",map[y - 1][x + 1]);
+	// printf("map[y - 1][x - 1] -> %c\n",map[y - 1][x - 1]);
+
+	if (map[y - 1][x] != ' ' && map[y - 1][x] != '\t' && map[y - 1][x] != '1')
+	{
+		// printf("1\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+	if ((map[y + 1] != NULL) && (map[y + 1][x] != ' ' && map[y + 1][x] != '\t' && map[y + 1][x] != '1'))
+	{
+		// printf("2\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+	if ((map[y][x + 1] != '\0') && (map[y][x + 1] != ' ' && map[y][x + 1] != '\t' && map[y][x + 1] != '1'))
+	{
+		// printf("3\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+	if (map[y][x - 1] != ' ' && map[y][x - 1] != '\t' && map[y][x - 1] != '1')
+	{
+		// printf("4\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+	if ((map[y + 1] != NULL) && (map[y + 1][x + 1] != '\0') &&(map[y + 1][x + 1] != '1'))
+	{
+		// printf("5\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+	if ((map[y + 1] != NULL) && (map[y + 1][x - 1] != '1'))
+	{
+		// printf("6\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+	if ((map[y - 1][x + 1] != '\0') && (map[y - 1][x + 1] != '1'))
+	{
+		// printf("7\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+	if (map[y - 1][x - 1] != '1')
+	{
+		// printf("8\n");
+		parse_space_error_msg();
+		exit (1);
+	}
+}
+
+void	parse_midle_space(char **map)
+{
+	int	x;
+	int	y;
+
+	// map = maze->map;
+	y = 0;
+	while (map[y] != NULL)
+	{
+		x = 0;
+		while (map[y][x] != '\0')
+		{
+			if (skip_spaces_helper(map[y], &x) == 0)
+				break;
+			if (map[y][x] == ' ' || map[y][x] == '\t')
+			{
+				parse_space(map, x, y);
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
 int	map_parsing(char *file_name)
 {
 	int		fd;
-	//int		fd_copy;
 	char	*line;
-	// char	*copy_line;
-	// int		count;
 	t_maze	*maze;
 
 	fd = open(file_name, O_RDONLY);
-	//fd_copy = fd;
 	maze = malloc(sizeof(t_maze));
 	maze_init(maze);
 	if (fd < 0)
 	{
+		printf("Error\n");
 		printf("File doesn't exist :/\n");
 		exit (1);
 	}
@@ -348,19 +431,11 @@ int	map_parsing(char *file_name)
 	maze->first_line = line;
 	maze->column = 1 + count_map_lines(fd);
 	close(fd);
-	//print_maze_struct(maze);
 	fd = open(file_name, O_RDONLY);
-
 	map_filling(maze, fd, file_name);
-	print_map(maze);
 	spawn_check(maze, maze->map);
-	// int	y = 0;
-	// while (y < maze->column)
-	// {
-	// 	printf("%s\n", maze->map[y]);
-	// 	y++;
-	// }
+	parse_midle_space(maze->map);
+	printf("Valid map ✅\n");
 	free(line);
-	//close(fd);
 	return (100);
 }

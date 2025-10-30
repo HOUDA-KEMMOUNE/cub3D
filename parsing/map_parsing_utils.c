@@ -35,3 +35,24 @@ void	flags_init(t_flags *flags)
 	flags->n = 0;
 	flags->w = 0;
 }
+
+int	skip_spaces_helper(char *s, int *px)
+{
+	int	i;
+
+	i = *px;
+	if ((s[i] == ' ' || s[i] == '\t') && i == 0)
+	{
+		while (s[i] == ' ' || s[i] == '\t')
+		{
+			if (s[i] == '\0')
+			{
+				return (0);
+				// break ;
+			}
+			i++;
+		}
+	}
+	*px = i;
+	return (1);
+}
