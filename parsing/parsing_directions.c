@@ -55,6 +55,8 @@ char	*parsing_directions_helper(char *line, int *direc)
 
 	s = ft_split(line, ' ');
 	new_path = ft_strtrim(s[1], "\n");
+	if (new_path == NULL)
+		return (NULL);
 	res = first_word(s[0], new_path);
 	if (ft_strncmp(res, "SO", 2) == 0)
 		direc[0] = 1;

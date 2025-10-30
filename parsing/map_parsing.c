@@ -12,12 +12,12 @@
 
 #include "parsing.h"
 
-int	check_line(char *line)
-{
-	if (line[0] == '1' || line[0] == ' ')
-		return (1);
-	return (0);
-}
+// int	check_line(char *line)
+// {
+// 	if (line[0] == '1' || line[0] == ' ')
+// 		return (1);
+// 	return (0);
+// }
 
 int	skip_spaces(char *line)
 {
@@ -36,26 +36,68 @@ int	skip_spaces(char *line)
 	return (i);
 }
 
-int	check_first_line(char *line)
+void	check_stars(char **map, int last_column)
 {
-	int	i;
+	int	x;
 
-	i = 0;
-	
-	i = skip_spaces(line);
-	while (line[i] && line[i] != '\n')
+	x = 0;
+	while ((map[0][x]) && (map[0][x] == '1' || map[0][x] == ' ' || map[0][x] == '\t'))
 	{
-		if (line[i] == '1' || line[i] == ' ' || line[i] == '\t')
-			i++;
+		x++;
+	}
+	while ((map[0][x]) && (map[0][x] == '*'))
+		x++;
+	if (map[0][x])
+	{
+		printf("Error\n");
+		printf("First line should include just 1s and spaces !\n");
+		exit (1);
+	}
+	x = 0;
+	while ((map[last_column][x]) && (map[last_column][x] == '1' || map[last_column][x] == ' ' || map[last_column][x] == '\t'))
+	{
+		x++;
+	}
+	while ((map[last_column][x]) && (map[last_column][x] == '*'))
+		x++;
+	if (map[last_column][x])
+	{
+		printf("Error\n");
+		printf("Last line should include just 1s and spaces !\n");
+		exit (1);
+	}
+}
+
+void	check_first_nd_last_line(char **map, int last_column)
+{
+	int	x;
+	
+	// --------------- First line ------------------
+	x = 0;
+	check_stars(map, last_column);
+	while (map[0][x])
+	{
+		if (map[0][x] == '1' || map[0][x] == ' ' || map[0][x] == '\t' || map[0][x] == '*')
+			x++;
 		else
 		{
-			printf("line[i] --> %c\n", line[i]);
 			printf("Error\n");
-			printf("The first line in the map should contain just 1\n");
-			exit(1);
+			printf("First line should include just 1s and spaces !\n");
+			exit (1);
 		}
 	}
-	return (0);
+	x = 0;
+	while (map[last_column][x])
+	{
+		if (map[last_column][x] == '1' || map[last_column][x] == ' ' || map[last_column][x] == '\t' || map[last_column][x] == '*')
+			x++;
+		else
+		{
+			printf("Error\n");
+			printf("Last line should include just 1s and spaces !\n");
+			exit (1);
+		}
+	}
 }
 
 int	check_map_mid(char *line)
@@ -313,7 +355,7 @@ void	parse_space_error_msg(void)
 	printf("Space should be rounded by 1s or spaces\n");
 }
 
-void	parse_space(char **map, int cx, int cy)
+void	parse_space(t_maze *maze, char **map, int cx, int cy)
 {
 	int	x;
 	int	y;
@@ -321,6 +363,10 @@ void	parse_space(char **map, int cx, int cy)
 	// touch parse_space_cases ondir l cases on3ayat 3lihom hna
 	x = cx;
 	y = cy;
+	if (y != 0 && y != maze->column - 1)
+		return ;
+	if (x != 0 && map[y][x + 1] != '\0')
+		return ;
 	// printf("map[y][x] -> %c\n",map[y][x]);
 	// printf("map[y - 1][x] -> %c\n",map[y - 1][x]);
 	// printf("map[y + 1][x] -> %c\n",map[y + 1][x]);
@@ -355,25 +401,25 @@ void	parse_space(char **map, int cx, int cy)
 		parse_space_error_msg();
 		exit (1);
 	}
-	if ((map[y + 1] != NULL) && (map[y + 1][x + 1] != '\0') &&(map[y + 1][x + 1] != '1'))
+	if ((map[y + 1] != NULL) && (map[y + 1][x + 1] != '\0') && (map[y + 1][x + 1] != ' ' && map[y + 1][x + 1] != '\t' && map[y + 1][x + 1] != '1'))
 	{
 		// printf("5\n");
 		parse_space_error_msg();
 		exit (1);
 	}
-	if ((map[y + 1] != NULL) && (map[y + 1][x - 1] != '1'))
+	if ((map[y + 1] != NULL) && (map[y + 1][x - 1] != ' ' && map[y + 1][x - 1] != '\t' && map[y + 1][x - 1] != '1'))
 	{
 		// printf("6\n");
 		parse_space_error_msg();
 		exit (1);
 	}
-	if ((map[y - 1][x + 1] != '\0') && (map[y - 1][x + 1] != '1'))
+	if ((map[y - 1][x + 1] != '\0') && (map[y - 1][x + 1] != ' ' && map[y - 1][x + 1] != '\t' && map[y - 1][x + 1] != '1'))
 	{
 		// printf("7\n");
 		parse_space_error_msg();
 		exit (1);
 	}
-	if (map[y - 1][x - 1] != '1')
+	if (map[y - 1][x - 1] != ' ' && map[y - 1][x - 1] != '\t' && map[y - 1][x - 1] != '1')
 	{
 		// printf("8\n");
 		parse_space_error_msg();
@@ -381,7 +427,7 @@ void	parse_space(char **map, int cx, int cy)
 	}
 }
 
-void	parse_midle_space(char **map)
+void	parse_midle_space(t_maze * maze, char **map)
 {
 	int	x;
 	int	y;
@@ -397,7 +443,7 @@ void	parse_midle_space(char **map)
 				break;
 			if (map[y][x] == ' ' || map[y][x] == '\t')
 			{
-				parse_space(map, x, y);
+				parse_space(maze, map, x, y);
 			}
 			x++;
 		}
@@ -405,19 +451,33 @@ void	parse_midle_space(char **map)
 	}
 }
 
-int	str_search(char *s1, char *s2)
-{
-	int	i;
+// int	str_search(char *s1, char *s2)
+// {
+// 	int	i;
+// 	int	j;
+// 	int	count;
+// 	int	s2_size;
 
-	i = 0;
-	while (s1[i])
-	{
-		if (s1[i] == s2[i])
-		{
-			
-		}
-	}
-}
+// 	i = 0;
+// 	j = 0;
+// 	count = 0;
+// 	// printf("s1 --> %s\n", s1);
+// 	s2_size = (int)ft_strlen(s2);
+// 	while (s1[i])
+// 	{
+// 		// printf("s1[%d] --> %c | ", i, s1[i]);
+// 		if (s1[i] == s2[j])
+// 		{
+// 			// printf("count --> %d\n", count);
+// 			count++;
+// 		}
+// 		i++;
+// 	}
+// 	// printf("\n");
+// 	if (count == s2_size)
+// 		return (1);
+// 	return (0);
+// }
 
 int	map_parsing(char *file_name)
 {
@@ -435,27 +495,37 @@ int	map_parsing(char *file_name)
 		exit (1);
 	}
 	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		if (check_line(line) == 1)
-			break ;
-		free(line);
-		line = get_next_line(fd);
-	}
+	// while (line != NULL)
+	// {
+	// 	if (check_line(line) == 1)
+	// 		break ;
+	// 	free(line);
+	// 	line = get_next_line(fd);
+	// }
 	//check_first_line(line);
+	// printf("line --> %s\n", line);
+
+	// char *text = "Hello, world!";
+	// char *result;
+
+	// result = ft_strnstr(text, "world", 12);
+
 	while (line != NULL)
 	{
-		if ()
+		if (ft_strnstr(line, "111", ft_strlen(line)) != NULL)
+			break ;
 		line = get_next_line(fd);
 	}
+	printf("debug\n");
 	maze->first_line = line;
 	maze->column = 1 + count_map_lines(fd);
 	close(fd);
 	fd = open(file_name, O_RDONLY);
 	map_filling(maze, fd, file_name);
-	print_map(maze);
+	// print_map(maze);
+	check_first_nd_last_line(maze->map, maze->column - 1);
 	spawn_check(maze, maze->map);
-	parse_midle_space(maze->map);
+	parse_midle_space(maze, maze->map);
 	printf("Valid map ✅\n");
 	free(line);
 	return (100);
