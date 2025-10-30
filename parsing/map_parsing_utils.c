@@ -27,3 +27,11 @@ void	maze_init(t_maze *maze)
 	maze->current_char = '1';
 	maze->map = NULL;
 }
+
+void	flags_init(t_flags *flags)
+{
+	flags->e = 0;
+	flags->s = 0;
+	flags->n = 0;
+	flags->w = 0;
+}

@@ -35,6 +35,16 @@ typedef struct s_maze
     char    **map;
 }               t_maze;
 
+// --------- spawn player flags ----------
+
+typedef struct  s_flags
+{
+    int n;
+    int s;
+    int e;
+    int w;
+}               t_flags;
+
 
 // --------- Parsing ----------------
 int		rgb_size(char **rgb);
@@ -51,6 +61,7 @@ int	    check_line(char *line);
 int	    map_parsing(char *file_name);
 void    maze_init(t_maze *maze);
 void	print_maze_struct(t_maze *maze);
+void	flags_init(t_flags *flags);
 
 // ----------- utils -----------
 void	free_split(char **s);

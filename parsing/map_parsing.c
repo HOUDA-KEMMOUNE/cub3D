@@ -148,13 +148,26 @@ void	maze_max_row(t_maze *maze, int fd, char *line)
 	maze->max_row = max;
 }
 
+void	filling_struct_map(t_maze *maze, int row, int column)
+{
+	int	y;
+
+	maze->map = ft_calloc(column + 1, sizeof(char *));
+	y = 0;
+	while (y < column)
+	{
+		maze->map[y] = ft_calloc(row + 1, sizeof(char));
+		y++;
+	}
+}
+
 void	map_array(t_maze *maze, int row, int column, int fd)
 {
 	char	*line;
-	char	map[column][row + 1];
 	int		x;
 	int		y;
 
+	filling_struct_map(maze, row, column);
 	line = get_next_line(fd);
     line = get_next_line(fd);
 	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
@@ -169,19 +182,20 @@ void	map_array(t_maze *maze, int row, int column, int fd)
             {
                 while (x < row)
                 {
-                    map[y][x] = '0';
+                    maze->map[y][x] = '*';
                     x++;
                 }
                 break ;
             }
-            map[y][x] = line[x];
+            maze->map[y][x] = line[x];
             x++;
         }
-        map[y][row] = '\0';
-        printf("map[%d] --> %s\n", y, map[y]);
+        maze->map[y][row] = '\0';
+        // printf("maze->map[%d] --> %s\n", y, maze->map[y]);
         y++;
         line = get_next_line(fd);
     }
+	maze->map[y] = NULL;
 }
 
 void	map_filling(t_maze *maze, int fd, char *file)
@@ -202,8 +216,104 @@ void	map_filling(t_maze *maze, int fd, char *file)
     close (fd);
     fd = open(file, O_RDONLY);
 	map_array(maze, row, column, fd);
-	printf("row --> %d\n", row);
-	printf("column --> %d\n", column);
+	// printf("row --> %d\n", row);
+	// printf("column --> %d\n", column);
+}
+
+void	print_map(t_maze *maze)
+{
+	int	y = 0;
+	while (y < maze->column)
+	{
+		printf("%s\n", maze->map[y]);
+		y++;
+	}
+}
+
+void	invalid_character(char **map)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (map[y] != NULL)
+	{
+		x = 0;
+		while (map[y][x] != '\0')
+		{
+			// printf("map[%d][%d] --> %c\n", y, x, map[y][x]);
+			if (map[y][x] == ' ' || map[y][x] == '\t' || map[y][x] == '*' || map[y][x] == '1'
+			   || map[y][x] == '0' || map[y][x] == 'N' || map[y][x] == 'S'
+			   || map[y][x] == 'E' || map[y][x] == 'W')
+				x++;
+			else
+			{
+				printf("Error\n");
+				printf("Invalid character in the map :/\n");
+				exit (1);
+			}
+		}
+		y++;
+	}
+}
+
+void	check_multi_player(t_flags spawn_char)
+{
+	if (spawn_char.e > 1 || spawn_char.s > 1 || spawn_char.n > 1 || spawn_char.w > 1)
+	{
+		printf("Error\n");
+		printf("Just one player should be spawned in the map !\n");
+		exit (1);
+	}
+	if ((spawn_char.s == 1) && (spawn_char.e == 1 || spawn_char.n == 1 || spawn_char.w == 1))
+	{
+		printf("Error\n");
+		printf("Just one player should be spawned in the map !\n");
+		exit (1);
+	}
+	if ((spawn_char.n == 1) && (spawn_char.s == 1 || spawn_char.e == 1 || spawn_char.w == 1))
+	{
+		printf("Error\n");
+		printf("Just one player should be spawned in the map !\n");
+		exit (1);
+	}
+	if ((spawn_char.w == 1) && (spawn_char.s == 1 || spawn_char.n == 1 || spawn_char.e == 1))
+	{
+		printf("Error\n");
+		printf("Just one player should be spawned in the map !\n");
+		exit (1);
+	}
+}
+
+void	spawn_check(t_maze *maze, char **map)
+{
+	// N,S,E or W
+	(void)maze;
+	int		x;
+	int		y;
+	t_flags	spawn_char;
+
+	flags_init(&spawn_char);
+	y = 0;
+	invalid_character(map);
+	while (map[y] != NULL)
+	{
+		x = 0;
+		while (map[y][x] != '\0')
+		{
+			if (map[y][x] == 'N')
+				spawn_char.n++;
+			else if (map[y][x] == 'S')
+				spawn_char.s++;
+			else if (map[y][x] == 'E')
+				spawn_char.e++;
+			else if (map[y][x] == 'W')
+				spawn_char.n++;
+			x++;
+		}
+		y++;
+	}
+	check_multi_player(spawn_char);
 }
 
 int	map_parsing(char *file_name)
@@ -240,6 +350,14 @@ int	map_parsing(char *file_name)
 	fd = open(file_name, O_RDONLY);
 
 	map_filling(maze, fd, file_name);
+	print_map(maze);
+	spawn_check(maze, maze->map);
+	// int	y = 0;
+	// while (y < maze->column)
+	// {
+	// 	printf("%s\n", maze->map[y]);
+	// 	y++;
+	// }
 	free(line);
 	//close(fd);
 	return (100);
