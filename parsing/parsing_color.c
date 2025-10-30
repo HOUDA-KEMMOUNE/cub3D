@@ -64,6 +64,7 @@ int	parse_rgb(char *s)
 int	parse_fc_color_helper(int *f, int *c, char *line)
 {
 	char	**s;
+	char	*p;
 
 	s = ft_split(line, ' ');
 	if ((ft_strncmp(s[0], "F", 1) == 0) || (ft_strncmp(s[0], "C", 1) == 0))
@@ -72,7 +73,12 @@ int	parse_fc_color_helper(int *f, int *c, char *line)
 			*f = 1;
 		else
 			*c = 1;
-		if (parse_rgb(s[1]) == 0)
+		p = line;
+		if (*p == 'F' || *p == 'C')
+			p++;
+		while (*p && (*p == ' ' || *p == '\t'))
+			p++;
+		if (parse_rgb(p) == 0)
 			return (0);
 	}
 	free_split(s);

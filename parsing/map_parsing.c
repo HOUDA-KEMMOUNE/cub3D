@@ -49,6 +49,7 @@ int	check_first_line(char *line)
 			i++;
 		else
 		{
+			printf("line[i] --> %c\n", line[i]);
 			printf("Error\n");
 			printf("The first line in the map should contain just 1\n");
 			exit(1);
@@ -404,6 +405,20 @@ void	parse_midle_space(char **map)
 	}
 }
 
+int	str_search(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i])
+	{
+		if (s1[i] == s2[i])
+		{
+			
+		}
+	}
+}
+
 int	map_parsing(char *file_name)
 {
 	int		fd;
@@ -427,12 +442,18 @@ int	map_parsing(char *file_name)
 		free(line);
 		line = get_next_line(fd);
 	}
-	check_first_line(line);
+	//check_first_line(line);
+	while (line != NULL)
+	{
+		if ()
+		line = get_next_line(fd);
+	}
 	maze->first_line = line;
 	maze->column = 1 + count_map_lines(fd);
 	close(fd);
 	fd = open(file_name, O_RDONLY);
 	map_filling(maze, fd, file_name);
+	print_map(maze);
 	spawn_check(maze, maze->map);
 	parse_midle_space(maze->map);
 	printf("Valid map ✅\n");
