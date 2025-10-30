@@ -44,7 +44,7 @@ char	*first_word(char *word, char *path)
 		}
 		return (word);
 	}
-	return ("bad");
+	return (NULL);
 }
 
 char	*parsing_directions_helper(char *line, int *direc)
@@ -54,10 +54,24 @@ char	*parsing_directions_helper(char *line, int *direc)
 	char	*res;
 
 	s = ft_split(line, ' ');
+	if (!s || !s[0] || !s[1])
+    {
+        free_split(s);
+        return (NULL);
+    }
 	new_path = ft_strtrim(s[1], "\n");
 	if (new_path == NULL)
-		return (NULL);
+    {
+        free_split(s);
+        return (NULL);
+    }
 	res = first_word(s[0], new_path);
+	if (res == NULL)
+    {
+        free_split(s);
+        free(new_path);
+        return (NULL);
+    }
 	if (ft_strncmp(res, "SO", 2) == 0)
 		direc[0] = 1;
 	else if (ft_strncmp(res, "WE", 2) == 0)
@@ -107,7 +121,8 @@ int	parsing_directions(int fd)
 	{
 		new_path = parsing_directions_helper(line, &direc[0]);
 		free(line);
-		free(new_path);
+		if (new_path)
+            free(new_path);
 		line = get_next_line(fd);
 	}
 	check_directions(&direc[0]);
