@@ -100,49 +100,108 @@ void	check_first_nd_last_line(char **map, int last_column)
 	}
 }
 
-int	check_map_mid(char *line)
+// int	check_map_mid(char *line)
+// {
+// 	int	i;
+// 	int	v;
+
+// 	i = 0;
+// 	v = 0;
+// 	i = skip_spaces(line);
+// 	if (line[i] == '\0' || line[i] == '\n')
+//     {
+// 		printf("Error\n");
+//         printf("Invalid empty map line\n");
+//         exit(1);
+//     }
+// 	printf("line --> %s\n", line);
+// 	while (line[i])
+// 	{
+// 		if (line[i] == '\n')
+// 			break;
+// 		if (line[i + 1] == '\n')
+// 		{
+// 			if (line[i] != '1')
+// 			{
+// 				printf("line[%d] --> %c\n", i, line[i]);
+// 				printf("Error\n");
+// 				printf("The maze should be rounded with 1s\n");
+// 				free (line);
+// 				exit(1);
+
+// 			}
+// 		}
+// 		if (line[i] != '1' && v == 0)
+// 		{
+// 			if (line[i] != 1)
+// 			{
+// 				printf("Error\n");
+// 				printf("The maze should be rounded with 1s\n");
+// 				free (line);
+// 				exit(1);
+// 			}
+// 		}
+// 		i++;
+// 		v++;
+// 	}
+// 	return (1);
+// }
+
+void	check_map_mid(char **map)
 {
-	int	i;
-	int	v;
+	int	x;
+	int	y;
 
-	i = 0;
-	v = 0;
-	i = skip_spaces(line);
-	if (line[i] == '\0' || line[i] == '\n')
-    {
-		printf("Error\n");
-        printf("Invalid empty map line\n");
-        exit(1);
-    }
-	while (line[i])
+	y = 1;
+	printf("map[2] --> {%s}\n", map[2]);
+	while (map[y] != NULL)
 	{
-		if (line[i] == '\n')
-			break;
-		if (line[i + 1] == '\n')
+		if (map[y + 1] == NULL)
+			break ;
+		x = 0;
+		while (map[y][x])
 		{
-			if (line[i] != '1')
+			if (map[y][0] != '1' && map[y][0] != ' ' && map[y][0] != '\t')
 			{
 				printf("Error\n");
-				printf("The maze should be rounded with 1s\n");
-				free (line);
-				exit(1);
-
+				printf("The map should be rounded by 1s !\n");
+				exit (1);
 			}
-		}
-		if (line[i] != '1' && v == 0)
-		{
-			if (line[i] != 1)
+			if (map[y][x] == '*')
 			{
-				printf("Error\n");
-				printf("The maze should be rounded with 1s\n");
-				free (line);
-				exit(1);
+				x--;
+				if (map[y][x] != '1')
+				{
+					printf("Error2\n");
+					printf("The map should be rounded by 1s !\n");
+					exit (1);
+				}
+				if (map[y][x] != '\0' && map[y][x] == '*')
+				{
+					while (map[y][x] != '\0' && map[y][x] == '*')
+						x++;
+					if (map[y][x] != '\0' && map[y][x] != '*')
+					{
+						printf("map[y][x] -> %c\n", map[y][x]);
+						printf("Error\n");
+						printf("Invalid character :/\n");
+						exit (1);
+					}
+				}
+				break ;
 			}
+			if ((map[y][x + 1] == '\0') && (map[y][x] != '1' && map[y][x] != '*' && map[y][x] != '\t'))
+			{
+				printf("map[%d][%d + 1] -> {%c}\n", y, x, map[y][x + 1]);
+				printf("map[%d][%d] -> {%c}\n", y, x, map[y][x]);
+				printf("Error3\n");
+				printf("The map should be rounded by 1s !\n");
+				exit (1);
+			}
+			x++;
 		}
-		i++;
-		v++;
+		y++;
 	}
-	return (1);
 }
 
 int	count_map_lines(int fd)
@@ -154,8 +213,8 @@ int	count_map_lines(int fd)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		if (check_map_mid(line) == 1)
-			count++;
+		// if (check_map_mid(line) == 1)
+		count++;
 		free (line);
 		line = get_next_line(fd);
 	}
@@ -461,34 +520,6 @@ void	parse_midle_space(t_maze * maze, char **map)
 	}
 }
 
-// int	str_search(char *s1, char *s2)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	count;
-// 	int	s2_size;
-
-// 	i = 0;
-// 	j = 0;
-// 	count = 0;
-// 	// printf("s1 --> %s\n", s1);
-// 	s2_size = (int)ft_strlen(s2);
-// 	while (s1[i])
-// 	{
-// 		// printf("s1[%d] --> %c | ", i, s1[i]);
-// 		if (s1[i] == s2[j])
-// 		{
-// 			// printf("count --> %d\n", count);
-// 			count++;
-// 		}
-// 		i++;
-// 	}
-// 	// printf("\n");
-// 	if (count == s2_size)
-// 		return (1);
-// 	return (0);
-// }
-
 int	map_parsing(char *file_name)
 {
 	int		fd;
@@ -527,14 +558,14 @@ int	map_parsing(char *file_name)
 		free(line);
 		line = get_next_line(fd);
 	}
-	printf("debug\n");
 	maze->first_line = line;
 	maze->column = 1 + count_map_lines(fd);
 	close(fd);
 	fd = open(file_name, O_RDONLY);
 	map_filling(maze, fd, file_name);
-	// print_map(maze);
+	print_map(maze);
 	check_first_nd_last_line(maze->map, maze->column - 1);
+	check_map_mid(maze->map);
 	spawn_check(maze, maze->map);
 	parse_midle_space(maze, maze->map);
 	printf("Valid map ✅\n");
