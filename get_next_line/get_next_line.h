@@ -25,5 +25,6 @@
 char	*get_next_line(int fd);
 char	*rest_char(char *line);
 char	*get_line(char *buffer, char *rest, int fd);
+void	gnl_cleanup(void);
 
 #endif

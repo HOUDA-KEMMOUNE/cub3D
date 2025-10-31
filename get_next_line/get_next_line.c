@@ -12,6 +12,8 @@
 
 #include "get_next_line.h"
 
+static char	*rest = NULL;
+
 char	*get_line(char *buffer, char *rest, int fd)
 {
 	ssize_t		read_ret;
@@ -62,7 +64,6 @@ char	*get_next_line(int fd)
 {
 	char		*buffer;
 	char		*line;
-	static char	*rest;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -79,4 +80,14 @@ char	*get_next_line(int fd)
 	}
 	rest = rest_char(line);
 	return (line);
+}
+
+/* free the static rest buffer used by get_next_line; call at program exit */
+void	gnl_cleanup(void)
+{
+	if (rest)
+	{
+		free(rest);
+		rest = NULL;
+	}
 }

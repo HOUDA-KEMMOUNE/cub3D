@@ -32,5 +32,8 @@ int	main(void)
 	if (parse_fc_color("map.cub") == 0)
 		exit (1);
 	map_parsing("map.cub");
-	
+	/* cleanup get_next_line internal buffers */
+	gnl_cleanup();
+
+	return (0);
 }
