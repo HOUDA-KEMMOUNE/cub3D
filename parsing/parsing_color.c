@@ -15,10 +15,13 @@
 int	rgb_size(char **rgb)
 {
 	int	i;
+	int	color;
 
 	i = 0;
 	while (rgb[i])
 	{
+		color = ft_atoi(rgb[i]);
+		printf("color --> %d\n", color);
 		i++;
 	}
 	if (i != 3)
