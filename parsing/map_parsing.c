@@ -184,6 +184,7 @@ void	maze_max_row(t_maze *maze, int fd, char *line)
 			max = count;
 		count = 0;
 		i = 0;
+		free(line);
 		line = get_next_line(fd);
 	}
 	maze->max_row = max;
@@ -209,9 +210,12 @@ void	map_array(t_maze *maze, int row, int column, int fd)
 	int		y;
 
 	filling_struct_map(maze, row, column);
-    line = get_next_line(fd);
+	line = get_next_line(fd);
 	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
+	{
+		free(line);
 		line = get_next_line(fd);
+	}
     y = 0;
     while (line != NULL && y < column)
     {
@@ -231,9 +235,12 @@ void	map_array(t_maze *maze, int row, int column, int fd)
             x++;
         }
         maze->map[y][row] = '\0';
-        y++;
-        line = get_next_line(fd);
+		y++;
+		free(line);
+		line = get_next_line(fd);
     }
+	if (line)
+		free(line);
 	maze->map[y] = NULL;
 }
 
@@ -245,7 +252,10 @@ void	map_filling(t_maze *maze, int fd, char *file)
 
 	line = get_next_line(fd);
 	while (line != NULL && ft_strncmp(line, maze->first_line, ft_strlen(maze->first_line)) != 0)
+	{
+		free(line);
 		line = get_next_line(fd);
+	}
 	maze_max_row(maze, fd, line);
 	row = maze->max_row;
 	column = maze->column;
@@ -514,6 +524,7 @@ int	map_parsing(char *file_name)
 	{
 		if (ft_strnstr(line, "111", ft_strlen(line)) != NULL)
 			break ;
+		free(line);
 		line = get_next_line(fd);
 	}
 	printf("debug\n");

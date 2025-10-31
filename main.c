@@ -28,7 +28,7 @@ int	main(void)
 		close(fd);
 		exit (1);
 	}
-	close (fd);
+	/* parsing_directions closes the fd internally */
 	if (parse_fc_color("map.cub") == 0)
 		exit (1);
 	map_parsing("map.cub");
