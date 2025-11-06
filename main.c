@@ -12,10 +12,36 @@
 
 #include "parsing/parsing.h"
 
+// void	check_empty_file(char *file)
+// {
+// 	int		fd;
+// 	char	*line;
+
+// 	fd = open(file, O_RDONLY);
+// 	line = get_next_line(fd);
+// 	if (line == NULL)
+// 	{
+// 		close (fd);
+// 		printf("Error\n");
+// 		printf("Empty file :/\n");
+// 		exit (1);
+// 	}
+// 	else
+// 	{
+// 		line = get_next_line(fd);
+// 		printf("line --> %s\n", line);
+// 		close (fd);
+// 		return ;
+// 	}
+// }
+
 int	main(void)
 {
-	int	fd;
+	int		fd;
+	// char	*file_name;
 
+	// file_name = "map.cub";
+	// check_empty_file("map.cub");
 	fd = open("map.cub", O_RDONLY);
 	if (fd < 0)
 	{

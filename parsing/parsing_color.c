@@ -15,17 +15,21 @@
 int	rgb_size(char **rgb)
 {
 	int	i;
-	int	color;
 
 	i = 0;
 	while (rgb[i])
 	{
-		color = ft_atoi(rgb[i]);
-		printf("color --> %d\n", color);
+		if (ft_strncmp(rgb[i], "\n", 1) == 0)
+		{
+			printf("Error\n");
+			printf("You should enter 3 clors (red,green,blue)\n");
+			exit (1);
+		}
 		i++;
 	}
 	if (i != 3)
 	{
+		printf("Error\n");
 		printf("You should enter 3 clors (red,green,blue)\n");
 		return (0);
 	}
@@ -36,6 +40,7 @@ int	check_range(int color_id)
 {
 	if (color_id >= 0 && color_id <= 255)
 		return (1);
+	printf("Error\n");
 	printf("Invalid range\n");
 	return (0);
 }

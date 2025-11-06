@@ -12,11 +12,51 @@
 
 #include "parsing.h"
 
-// int	check_line(char *line)
+void	check_line(char *file_name)
+{
+	int		fd;
+	int		i;
+	int		flag;
+	char	*line;
+
+	fd = open(file_name, O_RDONLY);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		if (ft_strnstr(line, "111", ft_strlen(line)) != NULL)
+			break ;
+		free(line);
+		line = get_next_line(fd);
+	}
+	while (line != NULL)
+	{
+		i = 0;
+		flag = 0;
+		printf("line --> %s\n", line);
+		while (line[i])
+		{
+			if (line[i] == ' ' || line[i] == '\t')
+				i++;
+			else
+			{
+				// printf("re\n");
+				flag = 1;
+				i++;
+			}
+		}
+		if (line[i] == '\0' && flag == 0)
+		{
+			printf("Error\n");
+			printf("Empty line :/\n");
+			exit (1);
+		}
+		line = get_next_line(fd);                                                                                               
+	}
+}
+
+// void	check_line(char **map)
 // {
-// 	if (line[0] == '1' || line[0] == ' ')
-// 		return (1);
-// 	return (0);
+
 // }
 
 int	skip_spaces(char *line)
@@ -74,6 +114,7 @@ void	check_first_nd_last_line(char **map, int last_column)
 	
 	// --------------- First line ------------------
 	x = 0;
+	check_empty_line(map);
 	check_stars(map, last_column);
 	while (map[0][x])
 	{
@@ -100,12 +141,40 @@ void	check_first_nd_last_line(char **map, int last_column)
 	}
 }
 
+void	check_empty_line(char **map)
+{
+	int	x;
+	int	y;
+	int	flag;
+
+	y = 0;
+	while (map[y] != NULL)
+	{
+		x = 0;
+		flag = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] != '*')
+				flag = 1;
+			x++;
+		}
+		if (flag == 0)
+		{
+			printf("Error\n");
+			printf("Empty line in the midle of the map :/\n");
+			exit(1);
+		}
+		y++;
+	}
+}
+
 void	check_map_mid(char **map)
 {
 	int	x;
 	int	y;
 	int	j;
 
+	check_empty_line(map);
 	y = 1;
 	while (map[y] != NULL)
 	{
@@ -158,11 +227,11 @@ void	check_map_mid(char **map)
 		y++;
 	}
 }
-
+/*
 int	count_map_lines(int fd)
 {
 	int		count;
-	int	i;
+	int		i;
 	char	*line;
 
 	count = 0;
@@ -181,6 +250,25 @@ int	count_map_lines(int fd)
 		count++;
 		free(line);
 		line = get_next_line(fd);
+	}
+	return (count);
+}
+*/
+
+int	count_map_lines(int fd)
+{
+	int		count;
+	//int		i;
+	char	*line;
+
+	count = 0;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		//printf("line (count_map_lines) --> %s\n", line);
+		free (line);
+		line = get_next_line(fd);
+		count++;
 	}
 	return (count);
 }
@@ -518,12 +606,13 @@ int	map_parsing(char *file_name)
 		free(line);
 		line = get_next_line(fd);
 	}
+	// check_line(file_name);
 	maze->first_line = line;
 	maze->column = 1 + count_map_lines(fd);
 	close(fd);
 	fd = open(file_name, O_RDONLY);
 	map_filling(maze, fd, file_name);
-	// print_map(maze);
+	//print_map(maze);
 	check_first_nd_last_line(maze->map, maze->column - 1);
 	check_map_mid(maze->map);
 	spawn_check(maze, maze->map);

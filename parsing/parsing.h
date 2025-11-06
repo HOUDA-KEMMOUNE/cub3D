@@ -57,7 +57,7 @@ char	*first_word(char *word, char *path);
 char	*parsing_directions_helper(char *line, int *direc);
 void	check_directions(int *direc);
 int		parsing_directions(int fd);
-int	    check_line(char *line);
+void	check_empty_line(char **map);
 int	    map_parsing(char *file_name);
 void    maze_init(t_maze *maze);
 void	print_maze_struct(t_maze *maze);

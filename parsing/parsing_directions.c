@@ -117,6 +117,13 @@ int	parsing_directions(int fd)
 		i++;
 	}
 	line = get_next_line(fd);
+	if (line == NULL)
+	{
+		close (fd);
+		printf("Error\n");
+		printf("Empty file :/\n");
+		exit (1);
+	}
 	while (line != NULL)
 	{
 		new_path = parsing_directions_helper(line, &direc[0]);
