@@ -1,36 +1,17 @@
+
 NO textures/path_to_the_north_texture
 SO textures/path_to_the_south_texture
 WE textures/path_to_the_west_texture                               
-EA textures/path_to_the_east_texture                               
+EA textures/path_to_the_east_texture
+
+
 C 200,200,200
 F 20,20,20
 
+
 11111
-10001
-10S01
-10001
-10001
-10001
-11001
-10001
-10001
-10001
-10001
-10001
+1S1
 11111
 
-10001
 
 
-
-
-
-
-
-
-
-
-
-
-
-1                                                       

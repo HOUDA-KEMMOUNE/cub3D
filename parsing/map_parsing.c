@@ -111,10 +111,8 @@ void	check_stars(char **map, int last_column)
 void	check_first_nd_last_line(char **map, int last_column)
 {
 	int	x;
-	
 	// --------------- First line ------------------
 	x = 0;
-	check_empty_line(map);
 	check_stars(map, last_column);
 	while (map[0][x])
 	{
@@ -141,30 +139,72 @@ void	check_first_nd_last_line(char **map, int last_column)
 	}
 }
 
-void	check_empty_line(char **map)
-{
-	int	x;
-	int	y;
-	int	flag;
+// void	check_empty_line(char **map)
+// {
+// 	int	x;
+// 	int	y;
+// 	int	end_line;
 
-	y = 0;
-	while (map[y] != NULL)
+// 	y = 0;
+// 	end_line = 0;
+// 	while (map[y] != NULL)
+// 	{
+// 		x = 0;
+// 		while (map[y][x])
+// 		{
+// 			if (map[y][x] == ' ' || map[y][x] == '\t' || map[y][x] == '1' || map[y][x] == '*')
+// 				end_line = 1;
+// 			else
+// 			{
+// 				end_line = 0;
+// 				break ;
+// 			}
+// 			x++;
+// 		}
+// 		if (end_line == 1)
+// 		{
+// 			while (map[y] != NULL)
+// 			{
+// 				x = 0;
+// 				if (map[y][x] != '*')
+// 				{
+// 					printf("Error\n");
+// 					printf("Invalid map (check_wmpty_line)\n");
+// 					exit (1);
+// 				}
+// 				x++;
+// 			}
+// 			y++;
+// 		}
+// 		y++;
+// 	}
+// }
+
+void	check_zero(int y, int x, char **map)
+{
+	if (map[y - 1][x] == ' ' || map[y - 1][x] == '\t' || map[y - 1][x] == '*' || map[y - 1][x] == '\0')
 	{
-		x = 0;
-		flag = 0;
-		while (map[y][x])
-		{
-			if (map[y][x] != '*')
-				flag = 1;
-			x++;
-		}
-		if (flag == 0)
-		{
-			printf("Error\n");
-			printf("Empty line in the midle of the map :/\n");
-			exit(1);
-		}
-		y++;
+		printf("Error\n");
+		printf("Invalid map: (0 in y-> %d and x-> %d should not be surrounded by spaces)\n", y, x);
+		exit (1);
+	}
+	if ((map[y + 1] != NULL) && (map[y + 1][x] == ' ' || map[y + 1][x] == '\t' || map[y + 1][x] == '*' || map[y + 1][x] == '\0'))
+	{
+		printf("Error\n");
+		printf("Invalid map: (0 in y-> %d and x-> %d should not be surrounded by spaces)\n", y, x);
+		exit (1);
+	}
+	if (map[y][x + 1] == ' ' || map[y][x + 1] == '\t' || map[y][x + 1] == '*' || map[y][x + 1] == '\0')
+	{
+		printf("Error\n");
+		printf("Invalid map: (0 in y-> %d and x-> %d should not be surrounded by spaces)\n", y, x);
+		exit (1);
+	}
+	if (map[y][x - 1] == ' ' || map[y][x - 1] == '\t' || map[y][x - 1] == '*' || map[y][x - 1] == '\0')
+	{
+		printf("Error\n");
+		printf("Invalid map: (0 in y-> %d and x-> %d should not be surrounded by spaces)\n", y, x);
+		exit (1);
 	}
 }
 
@@ -174,7 +214,6 @@ void	check_map_mid(char **map)
 	int	y;
 	int	j;
 
-	check_empty_line(map);
 	y = 1;
 	while (map[y] != NULL)
 	{
@@ -183,6 +222,10 @@ void	check_map_mid(char **map)
 		x = 0;
 		while (map[y][x])
 		{
+			if (map[y][x] == '0')
+				check_zero(y, x, map);
+			if (map[y][0] == '*')
+				break ;
 			if (map[y][0] != '1' && map[y][0] != ' ' && map[y][0] != '\t')
 			{
 				printf("Error\n");
@@ -583,6 +626,43 @@ void	parse_midle_space(t_maze * maze, char **map)
 	}
 }
 
+void	check_player(char **map, int x, int y)
+{
+	//N,S,E or W 
+	int	n;
+	int	s;
+	int	e;
+	int	w;
+
+	n = 0;
+	s = 0;
+	e = 0;
+	w = 0;
+	while (map[y]!= NULL)
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			if (map[y][x] == 'N')
+				n = 1;
+			else if (map[y][x] == 'S')
+				s = 1;
+			else if (map[y][x] == 'E')
+				e = 1;
+			else if (map[y][x] == 'W')
+				w = 1;
+			x++;
+		}
+		y++;
+	}
+	if (n == 0 && s == 0 && e == 0 && w == 0)
+	{
+		printf("Error\n");
+		printf("Where is the player ?!\n");
+		exit (1);
+	}
+}
+
 int	map_parsing(char *file_name)
 {
 	int		fd;
@@ -612,7 +692,8 @@ int	map_parsing(char *file_name)
 	close(fd);
 	fd = open(file_name, O_RDONLY);
 	map_filling(maze, fd, file_name);
-	//print_map(maze);
+	// print_map(maze);
+	check_player(maze->map, 0, 0);
 	check_first_nd_last_line(maze->map, maze->column - 1);
 	check_map_mid(maze->map);
 	spawn_check(maze, maze->map);
