@@ -176,14 +176,89 @@ void	check_if_map_exist(char *file_name)
 	close (fd);
 }
 
+void	textures_init(char *file_name, t_texture *texture)
+{
+// 	typedef struct  s_texture
+// {
+//     char    **no;
+//     char    **so;
+//     char    **we;
+//     char    **ea;
+//     char    **c;
+//     char    **f;
+// }               t_texture;
+	int			fd;
+	char		*line;
+	char		**sp;
+
+	fd = open(file_name, O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error\n");
+		printf("Not a valid file :/\n");
+		exit (1);
+	}
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		if (ft_strnstr(line, "NO", ft_strlen(line)) != NULL)
+		{
+			sp = ft_split(line, ' ');
+			texture->no = sp[1];
+			// free_split(sp);
+			// printf("texture->no ==> %s\n", texture->no);
+		}
+		else if (ft_strnstr(line, "SO", ft_strlen(line)) != NULL)
+		{
+			sp = ft_split(line, ' ');
+			texture->so = sp[1];
+			// free_split(sp);
+		}
+		else if (ft_strnstr(line, "WE", ft_strlen(line)) != NULL)
+		{
+			sp = ft_split(line, ' ');
+			texture->we = sp[1];
+			// free_split(sp);
+		}
+		else if (ft_strnstr(line, "EA", ft_strlen(line)) != NULL)
+		{
+			sp = ft_split(line, ' ');
+			texture->ea = sp[1];
+			// free_split(sp);
+		}
+		else if (ft_strnstr(line, "C", ft_strlen(line)) != NULL)
+		{
+			sp = ft_split(line, ' ');
+			texture->c = sp[1];
+			// free_split(sp);
+		}
+		else if (ft_strnstr(line, "F", ft_strlen(line)) != NULL)
+		{
+			sp = ft_split(line, ' ');
+			texture->f = sp[1];
+			// free_split(sp);
+		}
+		free (line);
+		line = get_next_line(fd);
+	}
+	printf("texture->no ==> %s", texture->no);
+	printf("texture->so ==> %s", texture->so);
+	printf("texture->we ==> %s", texture->we);
+	printf("texture->ea ==> %s", texture->ea);
+	printf("texture->c ==> %s", texture->c);
+	printf("texture->f ==> %s", texture->f);
+}
+
 int	main(void)
 {
 	int		fd;
+	t_texture	*texture;
 	// char	*file_name;
 
 	// file_name = "map.cub";
 	// check_empty_file("map.cub");
 	fd = open("map.cub", O_RDONLY);
+	texture = malloc(sizeof(t_texture));
 	if (fd < 0)
 	{
 		printf("Error\n");
@@ -198,6 +273,7 @@ int	main(void)
 	/* parsing_directions closes the fd internally */
 	if (parse_fc_color("map.cub") == 0)
 		exit (1);
+	textures_init("map.cub", texture);
 	check_if_map_exist("map.cub");
 	check_map_position("map.cub");
 	map_parsing("map.cub");

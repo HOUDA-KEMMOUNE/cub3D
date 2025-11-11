@@ -45,6 +45,17 @@ typedef struct  s_flags
     int w;
 }               t_flags;
 
+// --------- textures ----------
+
+typedef struct  s_texture
+{
+    char    *no;
+    char    *so;
+    char    *we;
+    char    *ea;
+    char    *c;
+    char    *f;
+}               t_texture;
 
 // --------- Parsing ----------------
 int		rgb_size(char **rgb);
@@ -58,11 +69,11 @@ char	*parsing_directions_helper(char *line, int *direc);
 void	check_directions(int *direc);
 int		parsing_directions(int fd);
 // void	check_empty_line(char **map);
-int	    map_parsing(char *file_name);
+int     map_parsing(char *file_name);
 void    maze_init(t_maze *maze);
 void	print_maze_struct(t_maze *maze);
 void	flags_init(t_flags *flags);
-int	    skip_spaces_helper(char *s, int *px);
+int     skip_spaces_helper(char *s, int *px);
 
 // ----------- utils -----------
 void	free_split(char **s);
