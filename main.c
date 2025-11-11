@@ -176,77 +176,62 @@ void	check_if_map_exist(char *file_name)
 	close (fd);
 }
 
-void	textures_init(char *file_name, t_texture *texture)
+void	fill_textures(char *line, char *text, t_texture *texture)
 {
-// 	typedef struct  s_texture
-// {
-//     char    **no;
-//     char    **so;
-//     char    **we;
-//     char    **ea;
-//     char    **c;
-//     char    **f;
-// }               t_texture;
-	int			fd;
-	char		*line;
-	char		**sp;
+	char	**first_split;
+	char	**second_split;
 
-	fd = open(file_name, O_RDONLY);
+	first_split = ft_split(line, ' ');
+	second_split = ft_split(first_split[1], '\n');
+	if (ft_strncmp(text, "NO", 2) == 0)
+		texture->no = second_split[0];
+	else if (ft_strncmp(text, "SO", 2) == 0)
+		texture->so = second_split[0];
+	else if (ft_strncmp(text, "WE", 2) == 0)
+		texture->we = second_split[0];
+	else if (ft_strncmp(text, "EA", 2) == 0)
+		texture->ea = second_split[0];
+	else if (ft_strncmp(text, "C", 1) == 0)
+		texture->c = second_split[0];
+	else if (ft_strncmp(text, "F", 1) == 0)
+		texture->f = second_split[0];
+}
+
+void	check_open(int fd)
+{
 	if (fd < 0)
 	{
 		printf("Error\n");
 		printf("Not a valid file :/\n");
 		exit (1);
 	}
+}
+
+void	textures_init(char *file_name, t_texture *texture)
+{
+	int			fd;
+	char		*line;
+
+	fd = open(file_name, O_RDONLY);
+	check_open(fd);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
 		if (ft_strnstr(line, "NO", ft_strlen(line)) != NULL)
-		{
-			sp = ft_split(line, ' ');
-			texture->no = sp[1];
-			// free_split(sp);
-			// printf("texture->no ==> %s\n", texture->no);
-		}
+			fill_textures(line, "NO", texture);
 		else if (ft_strnstr(line, "SO", ft_strlen(line)) != NULL)
-		{
-			sp = ft_split(line, ' ');
-			texture->so = sp[1];
-			// free_split(sp);
-		}
+			fill_textures(line, "SO", texture);
 		else if (ft_strnstr(line, "WE", ft_strlen(line)) != NULL)
-		{
-			sp = ft_split(line, ' ');
-			texture->we = sp[1];
-			// free_split(sp);
-		}
+			fill_textures(line, "WE", texture);
 		else if (ft_strnstr(line, "EA", ft_strlen(line)) != NULL)
-		{
-			sp = ft_split(line, ' ');
-			texture->ea = sp[1];
-			// free_split(sp);
-		}
+			fill_textures(line, "EA", texture);
 		else if (ft_strnstr(line, "C", ft_strlen(line)) != NULL)
-		{
-			sp = ft_split(line, ' ');
-			texture->c = sp[1];
-			// free_split(sp);
-		}
+			fill_textures(line, "C", texture);
 		else if (ft_strnstr(line, "F", ft_strlen(line)) != NULL)
-		{
-			sp = ft_split(line, ' ');
-			texture->f = sp[1];
-			// free_split(sp);
-		}
+			fill_textures(line, "F", texture);
 		free (line);
 		line = get_next_line(fd);
 	}
-	printf("texture->no ==> %s", texture->no);
-	printf("texture->so ==> %s", texture->so);
-	printf("texture->we ==> %s", texture->we);
-	printf("texture->ea ==> %s", texture->ea);
-	printf("texture->c ==> %s", texture->c);
-	printf("texture->f ==> %s", texture->f);
 }
 
 int	main(void)
