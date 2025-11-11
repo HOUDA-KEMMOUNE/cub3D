@@ -238,6 +238,7 @@ int	main(void)
 {
 	int		fd;
 	t_texture	*texture;
+	t_maze	*maze;
 	// char	*file_name;
 
 	// file_name = "map.cub";
@@ -258,10 +259,11 @@ int	main(void)
 	/* parsing_directions closes the fd internally */
 	if (parse_fc_color("map.cub") == 0)
 		exit (1);
+	maze = malloc(sizeof(t_maze));
 	textures_init("map.cub", texture);
 	check_if_map_exist("map.cub");
 	check_map_position("map.cub");
-	map_parsing("map.cub");
+	map_parsing("map.cub", maze);
 	/* cleanup get_next_line internal buffers */
 	gnl_cleanup();
 
