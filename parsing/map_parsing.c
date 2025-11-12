@@ -663,7 +663,7 @@ void	check_player(char **map, int x, int y)
 	}
 }
 
-void	player_init(char **map, t_maze *maze)
+void	player_init(char **map, t_player *player)
 {
 	int	x;
 	int	y;
@@ -675,22 +675,22 @@ void	player_init(char **map, t_maze *maze)
 		while (map[y][x])
 		{
 			if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E' || map[y][x] == 'W')
-				maze->player = map[y][x];
+				player->p = map[y][x];
 			x++;
 		}
 		y++;
 	}
-	if (maze->player == 'N')
-		maze->type = north;
-	else if (maze->player == 'S')
-		maze->type = south;
-	else if (maze->player == 'E')
-		maze->type = east;
-	else if (maze->player == 'W')
-		maze->type = west;
+	if (player->p == 'N')
+		player->type = north;
+	else if (player->p == 'S')
+		player->type = south;
+	else if (player->p == 'E')
+		player->type = east;
+	else if (player->p == 'W')
+		player->type = west;
 }
 
-void	map_parsing(char *file_name, t_maze *maze)
+void	map_parsing(char *file_name, t_maze *maze, t_player *player)
 {
 	int		fd;
 	char	*line;
@@ -723,7 +723,7 @@ void	map_parsing(char *file_name, t_maze *maze)
 	check_map_mid(maze->map);
 	spawn_check(maze, maze->map);
 	parse_midle_space(maze, maze->map);
-	player_init(maze->map, maze);
+	player_init(maze->map, player);
 	printf("Valid map ✅\n");
 	free_maze(maze);
 }

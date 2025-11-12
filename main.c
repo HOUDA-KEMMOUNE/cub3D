@@ -236,15 +236,17 @@ void	textures_init(char *file_name, t_texture *texture)
 
 int	main(void)
 {
-	int		fd;
+	int			fd;
 	t_texture	*texture;
-	t_maze	*maze;
+	t_maze		*maze;
+	t_player	*player;
 	// char	*file_name;
 
 	// file_name = "map.cub";
 	// check_empty_file("map.cub");
 	fd = open("map.cub", O_RDONLY);
 	texture = malloc(sizeof(t_texture));
+	player = malloc(sizeof(t_player));
 	if (fd < 0)
 	{
 		printf("Error\n");
@@ -263,7 +265,7 @@ int	main(void)
 	textures_init("map.cub", texture);
 	check_if_map_exist("map.cub");
 	check_map_position("map.cub");
-	map_parsing("map.cub", maze);
+	map_parsing("map.cub", maze, player);
 	/* cleanup get_next_line internal buffers */
 	gnl_cleanup();
 

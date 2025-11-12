@@ -33,14 +33,6 @@ typedef struct s_maze
 	int     max_row;
 	char    current_char;
 	char    **map;
-	char    player;
-	enum    PlayerType
-	{
-		north,
-		south,
-		east,
-		west
-	}       type;
 }               t_maze;
 
 // --------- spawn player flags ----------
@@ -65,6 +57,20 @@ typedef struct  s_texture
 	char    *f;
 }               t_texture;
 
+// --------- player ----------
+
+typedef struct  s_player
+{
+	char    p;
+	enum    PlayerType
+	{
+		north,
+		south,
+		east,
+		west
+	}       type;
+}               t_player;
+
 // --------- Parsing ----------------
 int		rgb_size(char **rgb);
 int		check_range(int color_id);
@@ -77,7 +83,7 @@ char	*parsing_directions_helper(char *line, int *direc);
 void	check_directions(int *direc);
 int		parsing_directions(int fd);
 // void	check_empty_line(char **map);
-void	map_parsing(char *file_name, t_maze *maze);
+void	map_parsing(char *file_name, t_maze *maze, t_player *player);
 void    maze_init(t_maze *maze);
 void	print_maze_struct(t_maze *maze);
 void	flags_init(t_flags *flags);
