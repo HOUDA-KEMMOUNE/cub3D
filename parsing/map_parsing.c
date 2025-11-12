@@ -663,6 +663,13 @@ void	check_player(char **map, int x, int y)
 	}
 }
 
+void	player_position(t_player *player, char p, int y, int x)
+{
+	player->p = p;
+	player->pos_x = x;
+	player->pos_y = y;
+}
+
 void	player_init(char **map, t_player *player)
 {
 	int	x;
@@ -675,7 +682,7 @@ void	player_init(char **map, t_player *player)
 		while (map[y][x])
 		{
 			if (map[y][x] == 'N' || map[y][x] == 'S' || map[y][x] == 'E' || map[y][x] == 'W')
-				player->p = map[y][x];
+				player_position(player, map[y][x], y, x);
 			x++;
 		}
 		y++;
