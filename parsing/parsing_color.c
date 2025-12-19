@@ -1,0 +1,157 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_color.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hkemmoun <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/19 23:15:47 by hkemmoun          #+#    #+#             */
+/*   Updated: 2025/10/19 23:15:51 by hkemmoun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "parsing.h"
+
+int	rgb_size(char **rgb)
+{
+	int	i;
+
+	i = 0;
+	while (rgb[i])
+	{
+		if (ft_strncmp(rgb[i], "\n", 1) == 0)
+		{
+			printf("Error\n");
+			printf("You should enter 3 clors (red,green,blue)\n");
+			exit (1);
+		}
+		i++;
+	}
+	if (i != 3)
+	{
+		printf("Error\n");
+		printf("You should enter 3 clors (red,green,blue)\n");
+		return (0);
+	}
+	return (1);
+}
+
+int	check_range(int color_id)
+{
+	if (color_id >= 0 && color_id <= 255)
+		return (1);
+	printf("Error\n");
+	printf("Invalid range\n");
+	return (0);
+}
+
+int	parse_rgb(char *s)
+{
+	char	**rgb;
+	int		i;
+	int		color_id;
+
+	rgb = ft_split(s, ',');
+	if (rgb_size(rgb) == 0)
+	{
+		free_split(rgb);
+		return (0);
+	}
+	i = 0;
+	while (i < 3)
+	{
+		color_id = ft_atoi(rgb[i]);
+		if (check_range(color_id) == 0)
+			return (0);
+		i++;
+	}
+	free_split(rgb);
+	return (1);
+}
+
+int	parse_fc_color_helper(int *f, int *c, char *line)
+{
+	char	**s;
+	char	*p;
+
+	s = ft_split(line, ' ');
+	/* ignore empty/whitespace-only lines */
+	if (!s || !s[0])
+	{
+		free_split(s);
+		return (1);
+	}
+	if ((ft_strncmp(s[0], "F", 1) == 0) || (ft_strncmp(s[0], "C", 1) == 0))
+	{
+		if (ft_strncmp(s[0], "F", 1) == 0)
+			*f = 1;
+		else
+			*c = 1;
+		p = line;
+		if (*p == 'F' || *p == 'C')
+			p++;
+		while (*p && (*p == ' ' || *p == '\t'))
+			p++;
+		if (parse_rgb(p) == 0)
+		{
+			free_split(s);
+			return (0);
+		}
+	}
+	free_split(s);
+	return (1);
+}
+
+int	parse_fc_color(char *file)
+{
+	char	*line;
+	int		f;
+	int		c;
+	int		fd;
+
+	f = 0;
+	c = 0;
+	fd = open(file, O_RDONLY);
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		if (parse_fc_color_helper(&f, &c, line) == 0)
+		{
+			free(line);
+			close (fd);
+			return (0);
+		}
+		free (line);
+		line = get_next_line(fd);
+	}
+	close (fd);
+	if (f == 1 && c == 1)
+		return (1);
+	printf("Error\n");
+	printf("Invalid input for the floor/ceiling color :/\n");
+	return (0);
+}
+
+int	rgb_to_int(char *rgb_str)
+{
+	char	**split;
+	int		r;
+	int		g;
+	int		b;
+	int		color;
+
+	split = ft_split(rgb_str, ',');
+	if (! split || rgb_size(split) == 0)
+	{
+		free_split(split);
+		return (0);
+	}
+	r = ft_atoi(split[0]);
+	g = ft_atoi(split[1]);
+	b = ft_atoi(split[2]);
+	free_split(split);
+	
+	// Combine RGB into 0xRRGGBB format
+	color = (r << 16) | (g << 8) | b;
+	return (color);
+}
