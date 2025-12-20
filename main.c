@@ -13,29 +13,6 @@
 #include "parsing/parsing.h"
 #include "raycasting/raycasting.h"
 
-// void	check_empty_file(char *file)
-// {
-// 	int		fd;
-// 	char	*line;
-
-// 	fd = open(file, O_RDONLY);
-// 	line = get_next_line(fd);
-// 	if (line == NULL)
-// 	{
-// 		close (fd);
-// 		printf("Error\n");
-// 		printf("Empty file :/\n");
-// 		exit (1);
-// 	}
-// 	else
-// 	{
-// 		line = get_next_line(fd);
-// 		printf("line --> %s\n", line);
-// 		close (fd);
-// 		return ;
-// 	}
-// }
-
 void	check_map_position(char *file_name)
 {
 	int		fd;
@@ -65,35 +42,6 @@ void	check_map_position(char *file_name)
 		line = get_next_line(fd);
 	}
 }
-
-// void	empty_line(char *line)
-// {
-// 	int	i;
-// 	int	flag;
-
-// 	i = 0;
-// 	flag = 0;
-// 	if (line == NULL)
-// 	{
-// 		printf("empty line (empty_line finction)\n");
-// 		return ;
-// 	}
-
-// 	while (line[i])
-// 	{
-// 		if (line[i] == ' ' || line[i] == '\t')
-// 			i++;
-// 		else
-// 		{
-// 			flag = 1;
-// 			i++;
-// 		}
-// 	}
-// 	if (flag == 0)
-// 	{
-
-// 	}
-// }
 
 void	check_if_map_exist(char *file_name)
 {
@@ -137,14 +85,11 @@ void	check_if_map_exist(char *file_name)
 		free (line);
 		line = get_next_line(fd);
 	}
-	// printf("line (after loop) --> %s\n", line);
 	flag = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		// printf("line (second loop) --> {%s}\n", line);
 		i = 0;
-		// printf("line[%d] (second loop) --> {%c}\n", i, line[i]);
 		while (line[i] != '\n')
 		{
 			if (line[i] == '\0' || line[i] == '\n' || (i == 0 && (line[i] == ' ' || line[i] == '\t')))
@@ -246,7 +191,7 @@ int	main(void)
 	fd = open("map.cub", O_RDONLY);
 	texture = malloc(sizeof(t_texture));
 	player = malloc(sizeof(t_player));
-	maze = malloc(sizeof(t_maze));  // MOVED: Allocate before parsing
+	maze = malloc(sizeof(t_maze));
 	
 	if (! texture || !player || !maze)
 	{

@@ -1,6 +1,6 @@
 NAME = cub3D
 LIBFT = libft/libft.a
-MLX_DIR = minilibx-linux
+MLX_DIR = mlx
 MLX = $(MLX_DIR)/libmlx.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -9,9 +9,9 @@ QUIET ?= @
 SILENT_MAKE = $(QUIET)$(MAKE) -s
 
 SRC = main.c utils.c parsing/parsing_color.c parsing/parsing_directions.c\
-	parsing/map_parsing.c parsing/map_parsing_utils.c raycasting/game.c\
-	raycasting/init.c raycasting/movements.c raycasting/raycasting.c\
-	raycasting/render.c
+    parsing/map_parsing.c parsing/map_parsing_utils.c raycasting/game.c\
+    raycasting/init.c raycasting/movements.c raycasting/raycasting.c\
+    raycasting/render.c
 
 GNL_SRC = get_next_line/get_next_line.c
 GNL_OBJ = $(GNL_SRC:.c=.o)
@@ -25,10 +25,10 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 all: $(LIBFT) $(MLX) $(NAME)
 
 $(LIBFT):
-	$(SILENT_MAKE) -C libft >/dev/null || { echo "libft build failed"; exit 1; }
+	$(SILENT_MAKE) -C libft >/dev/null 2>&1 || { echo "libft build failed"; exit 1; }
 
 $(MLX):
-	$(SILENT_MAKE) -C $(MLX_DIR) >/dev/null || { echo "mlx build failed"; exit 1; }
+	$(SILENT_MAKE) -C $(MLX_DIR) >/dev/null 2>&1 || { echo "mlx build failed"; exit 1; }
 
 %.o: %.c
 	$(QUIET)$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -44,7 +44,6 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 	@make fclean -C libft
-	@rm -f $(MLX)
 
 re: fclean all
 

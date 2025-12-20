@@ -64,12 +64,9 @@ typedef struct  s_texture
 typedef struct  s_player
 {
 	char    p;
-	double		pos_x;
-	double		pos_y;
-	double		dir_x;
-	double		dir_y;
-	double		plane_x;
-	double		plane_y;
+	double pos_x;
+    double pos_y;
+    double angle;
 	enum    PlayerType
 	{
 		north,
