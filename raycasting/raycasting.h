@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
+#include <sys/time.h>
 #include "mlx.h"
 #include "parsing.h"
 
@@ -21,8 +22,8 @@
 # define KEY_ESC 65307
 
 // Movement/Rotation
-# define MOVE_SPEED 0.07
-# define ROT_SPEED 0.07          // Rotation speed in radians (~4 degrees)
+# define MOVE_SPEED 3.0
+# define ROT_SPEED 3.2       // Rotation speed in radians (~4 degrees)
 
 // Math constants
 #ifndef M_PI
@@ -36,7 +37,7 @@
 
 // Field of View (FOV) - adjust this to change how wide you can see
 // 60 degrees = M_PI / 3.0 (standard Wolfenstein)
-// 66 degrees ≈ 1.15 radians (similar to your old plane_x = 0.66)
+// 66 degrees ≈ 1.15 radians (similar to your old plane_x = 0.66)dddddd
 # define FOV (M_PI / 3.0)        // 60 degrees
 
 // Ray structure
@@ -77,12 +78,26 @@ typedef struct	s_mlx
 	t_img	img;
 }				t_mlx;
 
+typedef struct s_keys
+{
+	int	w;           // Forward
+	int	s;           // Backward
+	int	a;           // Strafe left
+	int	d;           // Strafe right
+	int	left;        // Rotate left
+	int	right;       // Rotate right
+	int	esc;         // Exit
+}	t_keys;
+
 typedef struct	s_game
 {
 	t_player	*player;
 	t_texture	*texture;
 	t_maze		*maze;
 	t_mlx		mlx;
+	t_keys		keys;
+	double		delta_time;    // 🆕 Time since last frame (seconds)
+	long		last_time;     // 🆕 Timestamp of last frame (milliseconds)
 }				t_game;
 
 // Function declarations
@@ -103,5 +118,7 @@ void	calculate_step(t_ray *ray, t_player *player);
 void	perform_dda(t_ray *ray, t_maze *maze);
 void	calculate_wall_height(t_ray *ray, t_player *player);
 unsigned int	get_wall_color(t_ray *ray);
+long	get_time_ms(void);      
+void	calculate_delta_time(t_game *game); 
 
 #endif
