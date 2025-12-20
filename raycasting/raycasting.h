@@ -68,6 +68,17 @@ typedef struct	s_img
 	int		endian;
 }				t_img;
 
+typedef struct s_wall_tex
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_lenght;
+	int		endian;
+	int		width;
+	int		height;
+}				t_wall_tex;
+
 typedef struct	s_mlx
 {
 	void	*mlx;
@@ -93,6 +104,10 @@ typedef struct	s_game
 	t_maze		*maze;
 	t_mlx		mlx;
 	t_keys		keys;
+	t_wall_tex	north_tex;
+	t_wall_tex	south_tex;
+	t_wall_tex	east_tex;
+	t_wall_tex	west_tex;
 	double		delta_time;    
 	long		last_time;
 }				t_game;
@@ -114,8 +129,8 @@ void	init_ray(t_ray *ray, t_player *player, int x);
 void	calculate_step(t_ray *ray, t_player *player);
 void	perform_dda(t_ray *ray, t_maze *maze);
 void	calculate_wall_height(t_ray *ray, t_player *player);
-unsigned int	get_wall_color(t_ray *ray);
 long	get_time_ms(void);      
 void	calculate_delta_time(t_game *game); 
+void	load_textures(t_game *game);
 
 #endif

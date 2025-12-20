@@ -13,6 +13,14 @@ int	close_window(t_game *game)
 {
 	if (game->mlx.img.img)
 		mlx_destroy_image(game->mlx.mlx, game->mlx.img.img);
+	if (game->north_tex.img)
+		mlx_destroy_image(game->mlx.mlx, game->north_tex.img);
+	if (game->south_tex.img)
+		mlx_destroy_image(game->mlx.mlx, game->south_tex.img);
+	if (game->east_tex.img)
+		mlx_destroy_image(game->mlx.mlx, game->east_tex.img);
+	if (game->west_tex.img)
+		mlx_destroy_image(game->mlx.mlx, game->west_tex.img);
 	if (game->mlx.win)
 		mlx_destroy_window(game->mlx.mlx, game->mlx.win);
 	if (game->mlx.mlx)
@@ -127,6 +135,10 @@ void	start_cub3D(t_game *game)
 	game->keys. esc = 0;
 	game->last_time = get_time_ms();
 	game->delta_time = 0.016; 
+	game->north_tex.img = NULL;
+	game->south_tex.img = NULL;
+	game->east_tex.img = NULL;
+	game->west_tex.img = NULL;
 	game->mlx. mlx = mlx_init();
 
 	check_arg(game->mlx.mlx);
@@ -137,6 +149,7 @@ void	start_cub3D(t_game *game)
 	check_arg(game->mlx.img. img);
 	game->mlx.img.addr = mlx_get_data_addr(game->mlx.img.img, 
 		&game->mlx. img.bpp, &game->mlx.img.line_lenght, &game->mlx. img.endian);
+	load_textures(game);
 
 	init_player_direction(game->player);
 	mlx_hook(game->mlx.win, 17, 0, close_window, game);

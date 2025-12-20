@@ -90,54 +90,79 @@ void	calculate_wall_height(t_ray *ray, t_player *player)
 	if (ray->draw_end >= WIN_HEIGHT)
 		ray->draw_end = WIN_HEIGHT - 1;
 }
-
-unsigned int	get_wall_color(t_ray *ray)
+static t_wall_tex	*choose_wall_texture(t_game *game, t_ray *ray)
 {
-	unsigned int	color;
-
 	if (ray->side == 0)
 	{
-		if (ray->step_x > 0)
-			color = 0xFF0000;
+		if (ray->ray_dir_x > 0)
+			return (&game->east_tex);
 		else
-			color = 0x00FF00;
+			return (&game->west_tex);
 	}
 	else
 	{
-		if (ray->step_y > 0)
-			color = 0x0000FF;
+		if (ray->ray_dir_y > 0)
+			return (&game->south_tex);
 		else
-			color = 0xFFFF00;
+			return (&game->north_tex);
 	}
-	
-	return (color);
 }
 
 void	draw_wall_column(t_game *game, t_ray *ray, int x)
 {
-	int				y;
+	int			y;
+	double		wall_x;
+	int			tex_x;
+	double		step;
+	double		tex_pos;
+	int			tex_y;
+	char		*pixel;
 	unsigned int	color;
+	t_wall_tex	*tex;
 
-	color = get_wall_color(ray);
-	
+	tex = choose_wall_texture(game, ray);
+	if (ray->side == 0)
+		wall_x = game->player->pos_y + ray->perp_wall_dist * ray->ray_dir_y;
+	else
+		wall_x = game->player->pos_x + ray->perp_wall_dist * ray->ray_dir_x;
+	wall_x -= floor(wall_x);
+	tex_x = (int)(wall_x * (double)tex->width);
+	if (tex_x < 0)
+		tex_x = 0;
+	if (tex_x >= tex->width)
+		tex_x = tex->width - 1;
+	if (ray->side == 0 && ray->ray_dir_x > 0)
+		tex_x = tex->width - tex_x - 1;
+	if (ray->side == 1 && ray->ray_dir_y < 0)
+		tex_x = tex->width - tex_x - 1;
+	step = (double)tex->height / (double)ray->line_height;
+	tex_pos = (ray->draw_start - WIN_HEIGHT / 2 + ray->line_height / 2)
+		* step;
 	y = 0;
 	while (y < ray->draw_start)
 	{
-		my_mlx_pixel_put(&game->mlx. img, x, y, 0x87CEEB);
+		my_mlx_pixel_put(&game->mlx.img, x, y, game->texture->c_int);
 		y++;
 	}
-	
 	y = ray->draw_start;
 	while (y <= ray->draw_end)
 	{
+		tex_y = (int)tex_pos;
+		if (tex_y < 0)
+			tex_y = 0;
+		if (tex_y >= tex->height)
+			tex_y = tex->height - 1;
+		pixel = tex->addr + (tex_y * tex->line_lenght)
+			+ tex_x * (tex->bpp / 8);
+		color = *(unsigned int *)pixel;
 		my_mlx_pixel_put(&game->mlx.img, x, y, color);
+		tex_pos += step;
 		y++;
 	}
-	
 	y = ray->draw_end + 1;
 	while (y < WIN_HEIGHT)
 	{
-		my_mlx_pixel_put(&game->mlx. img, x, y, 0x228B22);
+		my_mlx_pixel_put(&game->mlx.img, x, y, game->texture->f_int);
 		y++;
 	}
 }

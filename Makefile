@@ -9,9 +9,9 @@ QUIET ?= @
 SILENT_MAKE = $(QUIET)$(MAKE) -s
 
 SRC = main.c utils.c parsing/parsing_color.c parsing/parsing_directions.c\
-    parsing/map_parsing.c parsing/map_parsing_utils.c raycasting/game.c\
-    raycasting/init.c raycasting/movements.c raycasting/raycasting.c\
-    raycasting/render.c
+	parsing/map_parsing.c parsing/map_parsing_utils.c raycasting/game.c\
+	raycasting/init.c raycasting/movements.c raycasting/raycasting.c\
+	raycasting/render.c raycasting/textures.c
 
 GNL_SRC = get_next_line/get_next_line.c
 GNL_OBJ = $(GNL_SRC:.c=.o)
