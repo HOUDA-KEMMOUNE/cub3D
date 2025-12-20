@@ -2,26 +2,21 @@
 
 void init_player_direction(t_player *player)
 {
-    // Simply set the angle based on spawn direction
     if (player->type == north || player->p == 'N')
-        player->angle = 3 * M_PI / 2;  // 270° (facing up)
+        player->angle = 3 * M_PI / 2;
     else if (player->type == south || player->p == 'S')
-        player->angle = M_PI / 2;      // 90° (facing down)
+        player->angle = M_PI / 2;
     else if (player->type == east || player->p == 'E')
-        player->angle = 0;             // 0° (facing right)
+        player->angle = 0;
     else if (player->type == west || player->p == 'W')
-        player->angle = M_PI;          // 180° (facing left)
-    
-    // That's it! No more dir_x, dir_y, plane_x, plane_y nonsense! 
+        player->angle = M_PI;
 }
-// Initialize ray for current screen column using ANGLE method
+
 void	init_ray(t_ray *ray, t_player *player, int x)
 {
 	double	ray_angle;
 	
 	ray_angle = player->angle - (FOV / 2.0) + ((double)x / WIN_WIDTH) * FOV;
-	
-	// Store angle difference for fisheye correction
 	ray->angle_offset = ray_angle - player->angle;
 	
 	ray->ray_dir_x = cos(ray_angle);

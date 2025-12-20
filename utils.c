@@ -23,5 +23,5 @@ void	free_split(char **s)
         free(s[i]);   // free each string
         i++;
     }
-    free(s);          // finally free the array itself
+    free(s);
 }

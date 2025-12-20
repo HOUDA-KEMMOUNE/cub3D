@@ -1,5 +1,5 @@
 #ifndef RAYCASTING_H
-# define RAYCASTING_H
+#define RAYCASTING_H
 
 #include <stdio.h>
 #include <unistd.h>
@@ -22,8 +22,9 @@
 # define KEY_ESC 65307
 
 // Movement/Rotation
+# define COLLISION_MARGIN 0.05   // Player collision radius
 # define MOVE_SPEED 3.0
-# define ROT_SPEED 3.2       // Rotation speed in radians (~4 degrees)
+# define ROT_SPEED 3.2      
 
 // Math constants
 #ifndef M_PI
@@ -31,35 +32,31 @@
 #endif
 
 # define PI M_PI
-# define PI_2 (M_PI / 2.0)       // 90 degrees
-# define PI_3_2 (3.0 * M_PI / 2.0) // 270 degrees
-# define TWO_PI (2.0 * M_PI)     // 360 degrees
-
-// Field of View (FOV) - adjust this to change how wide you can see
-// 60 degrees = M_PI / 3.0 (standard Wolfenstein)
-// 66 degrees ≈ 1.15 radians (similar to your old plane_x = 0.66)dddddd
-# define FOV (M_PI / 3.0)        // 60 degrees
+# define PI_2 (M_PI / 2.0)     
+# define PI_3_2 (3.0 * M_PI / 2.0) 
+# define TWO_PI (2.0 * M_PI)  
+# define FOV (M_PI / 3.0)   
 
 // Ray structure
 typedef struct s_ray
 {
-	double	ray_dir_x;           // Ray direction X component
-	double	ray_dir_y;           // Ray direction Y component
-	double	angle_offset;		 // angle diff from player
-	int		map_x;               // Current map cell X
-	int		map_y;               // Current map cell Y
-	double	side_dist_x;         // Distance to next X grid line
-	double	side_dist_y;         // Distance to next Y grid line
-	double	delta_dist_x;        // Distance between X grid lines
-	double	delta_dist_y;        // Distance between Y grid lines
-	double	perp_wall_dist;      // Perpendicular distance to wall
-	int		step_x;              // Step direction in X (-1 or +1)
-	int		step_y;              // Step direction in Y (-1 or +1)
-	int		hit;                 // Did we hit a wall?
-	int		side;                // 0 = vertical wall, 1 = horizontal wall
-	int		line_height;         // Height of wall slice to draw
-	int		draw_start;          // Start Y position for drawing
-	int		draw_end;            // End Y position for drawing
+	double	ray_dir_x;           
+	double	ray_dir_y;           
+	double	angle_offset;		 
+	int		map_x;               
+	int		map_y;              
+	double	side_dist_x;         
+	double	side_dist_y;       
+	double	delta_dist_x;    
+	double	delta_dist_y;      
+	double	perp_wall_dist;    
+	int		step_x;            
+	int		step_y;             
+	int		hit;               
+	int		side;        
+	int		line_height;     
+	int		draw_start;    
+	int		draw_end; 
 }	t_ray;
 
 typedef struct	s_img
@@ -82,11 +79,11 @@ typedef struct s_keys
 {
 	int	w;           // Forward
 	int	s;           // Backward
-	int	a;           // Strafe left
-	int	d;           // Strafe right
-	int	left;        // Rotate left
-	int	right;       // Rotate right
-	int	esc;         // Exit
+	int	a;          
+	int	d;    
+	int	left;     
+	int	right;       
+	int	esc;         
 }	t_keys;
 
 typedef struct	s_game
@@ -96,8 +93,8 @@ typedef struct	s_game
 	t_maze		*maze;
 	t_mlx		mlx;
 	t_keys		keys;
-	double		delta_time;    // 🆕 Time since last frame (seconds)
-	long		last_time;     // 🆕 Timestamp of last frame (milliseconds)
+	double		delta_time;    
+	long		last_time;
 }				t_game;
 
 // Function declarations

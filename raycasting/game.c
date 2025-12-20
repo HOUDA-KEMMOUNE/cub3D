@@ -62,7 +62,6 @@ int	key_release(int key_code, t_game *game)
 	return (0);
 }
 
-// 🆕 Get current time in milliseconds
 long	get_time_ms(void)
 {
 	struct timeval	tv;
@@ -71,25 +70,19 @@ long	get_time_ms(void)
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
 }
 
-// 🆕 Calculate delta time (time since last frame)
 void	calculate_delta_time(t_game *game)
 {
 	long	current_time;
 	
 	current_time = get_time_ms();
 	
-	// Delta time in seconds (convert milliseconds to seconds)
+	//convert milliseconds to seconds
 	game->delta_time = (current_time - game->last_time) / 1000.0;
-	
-	// Cap delta time to prevent huge jumps
-	// (happens if window is dragged, computer hiccups, etc.)
-	if (game->delta_time > 0.05)  // Max 50ms = minimum 20 FPS
+	if (game->delta_time > 0.05)  
 		game->delta_time = 0.05;
 	
-	// Prevent zero or negative delta time
 	if (game->delta_time <= 0.0)
-		game->delta_time = 0.016;  // Default to ~60 FPS
-	
+		game->delta_time = 0.016;
 	game->last_time = current_time;
 }
 
@@ -113,26 +106,18 @@ void	handle_movement(t_game *game)
 		rotate_right(game);
 }
 
-// 🆕 Loop hook with delta time calculation
 static int	loop_hook(t_game *game)
 {
-	// Calculate time since last frame
 	calculate_delta_time(game);
-	
-	// Process input (movement now uses delta_time)
 	handle_movement(game);
-	
-	// Render
 	render_frame(game);
 	mlx_put_image_to_window(game->mlx.mlx, game->mlx.win, 
 		game->mlx.img.img, 0, 0);
-	
 	return (0);
 }
 
 void	start_cub3D(t_game *game)
 {
-	// Initialize key states
 	game->keys.w = 0;
 	game->keys.s = 0;
 	game->keys.a = 0;
@@ -140,27 +125,20 @@ void	start_cub3D(t_game *game)
 	game->keys.left = 0;
 	game->keys.right = 0;
 	game->keys. esc = 0;
-	
-	// 🆕 Initialize timing
 	game->last_time = get_time_ms();
-	game->delta_time = 0.016;  // Start with ~60 FPS assumption
-	
-	// Initialize MLX
+	game->delta_time = 0.016; 
 	game->mlx. mlx = mlx_init();
+
 	check_arg(game->mlx.mlx);
-	
 	game->mlx.win = mlx_new_window(game->mlx.mlx, WIN_WIDTH, 
 		WIN_HEIGHT, "cub3D");
 	check_arg(game->mlx.win);
-	
 	game->mlx.img.img = mlx_new_image(game->mlx.mlx, WIN_WIDTH, WIN_HEIGHT);
 	check_arg(game->mlx.img. img);
-	
 	game->mlx.img.addr = mlx_get_data_addr(game->mlx.img.img, 
 		&game->mlx. img.bpp, &game->mlx.img.line_lenght, &game->mlx. img.endian);
-	
+
 	init_player_direction(game->player);
-	
 	mlx_hook(game->mlx.win, 17, 0, close_window, game);
 	mlx_hook(game->mlx.win, 2, 1L << 0, key_press, game);
 	mlx_hook(game->mlx.win, 3, 1L << 1, key_release, game);

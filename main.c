@@ -186,7 +186,7 @@ int	main(void)
 	t_texture	*texture;
 	t_maze		*maze;
 	t_player	*player;
-	t_game		game;  // NEW
+	t_game		game;
 
 	fd = open("map.cub", O_RDONLY);
 	texture = malloc(sizeof(t_texture));
@@ -226,27 +226,18 @@ int	main(void)
 	}
 	
 	textures_init("map.cub", texture);
-	
-	// NEW: Convert RGB strings to integers for rendering
 	texture->c_int = rgb_to_int(texture->c);
 	texture->f_int = rgb_to_int(texture->f);
 	
 	check_if_map_exist("map.cub");
 	check_map_position("map.cub");
 	map_parsing("map.cub", maze, player);
-	
 	gnl_cleanup();
 	
-	// NEW: Setup game structure
 	game.player = player;
 	game.texture = texture;
 	game.maze = maze;
-	
-	// NEW: Initialize player direction vectors
 	init_player_direction(player);
-	
-	// NEW: Start the 3D rendering engine
 	start_cub3D(&game);
-	
 	return (0);
 }

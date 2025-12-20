@@ -60,7 +60,6 @@ void	calculate_wall_height(t_ray *ray, t_player *player)
 {
 	double	distance;
 	
-	// Calculate distance to wall
 	if (ray->side == 0)
 	{
 		distance = (ray->map_x - player->pos_x + 
@@ -71,24 +70,18 @@ void	calculate_wall_height(t_ray *ray, t_player *player)
 		distance = (ray->map_y - player->pos_y + 
 			(1.0 - ray->step_y) / 2.0) / ray->ray_dir_y;
 	}
-	
-	// 🔥 FISHEYE FIX:  Multiply by cosine of angle difference
 	ray->perp_wall_dist = distance * cos(ray->angle_offset);
-	
-	// Safety checks
 	if (fabs(ray->perp_wall_dist) < 0.001)
 		ray->perp_wall_dist = 0.001;
 	
 	if (ray->perp_wall_dist < 0)
 		ray->perp_wall_dist = -ray->perp_wall_dist;
 	
-	// Calculate height
 	ray->line_height = (int)(WIN_HEIGHT / ray->perp_wall_dist);
 	
 	if (ray->line_height > WIN_HEIGHT * 10)
 		ray->line_height = WIN_HEIGHT * 10;
 	
-	// Calculate drawing boundaries
 	ray->draw_start = -ray->line_height / 2 + WIN_HEIGHT / 2;
 	if (ray->draw_start < 0)
 		ray->draw_start = 0;
