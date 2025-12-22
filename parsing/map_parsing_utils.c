@@ -46,10 +46,7 @@ int	skip_spaces_helper(char *s, int *px)
 		while (s[i] == ' ' || s[i] == '\t')
 		{
 			if (s[i] == '\0')
-			{
 				return (0);
-				// break ;
-			}
 			i++;
 		}
 	}
