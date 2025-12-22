@@ -11,23 +11,25 @@ static void	check_arg(void *ptr)
 
 int	close_window(t_game *game)
 {
-	if (game->mlx.img.img)
-		mlx_destroy_image(game->mlx.mlx, game->mlx.img.img);
-	if (game->north_tex.img)
-		mlx_destroy_image(game->mlx.mlx, game->north_tex.img);
-	if (game->south_tex.img)
-		mlx_destroy_image(game->mlx.mlx, game->south_tex.img);
-	if (game->east_tex.img)
-		mlx_destroy_image(game->mlx.mlx, game->east_tex.img);
-	if (game->west_tex.img)
-		mlx_destroy_image(game->mlx.mlx, game->west_tex.img);
-	if (game->mlx.win)
-		mlx_destroy_window(game->mlx.mlx, game->mlx.win);
-	if (game->mlx.mlx)
+	if (game->mlx. mlx)
 	{
+		if (game->mlx.img.img)
+			mlx_destroy_image(game->mlx.mlx, game->mlx.img.img);
+		if (game->north_tex.img)
+			mlx_destroy_image(game->mlx.mlx, game->north_tex. img);
+		if (game->south_tex.img)
+			mlx_destroy_image(game->mlx.mlx, game->south_tex.img);
+		if (game->east_tex.img)
+			mlx_destroy_image(game->mlx.mlx, game->east_tex.img);
+		if (game->west_tex. img)
+			mlx_destroy_image(game->mlx. mlx, game->west_tex.img);
+		if (game->mlx.win)
+			mlx_destroy_window(game->mlx.mlx, game->mlx.win);
 		mlx_destroy_display(game->mlx.mlx);
 		free(game->mlx.mlx);
+		game->mlx.mlx = NULL;
 	}
+	cleanup(game);
 	exit(0);
 	return (0);
 }
