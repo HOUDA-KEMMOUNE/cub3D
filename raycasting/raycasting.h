@@ -77,7 +77,7 @@ typedef struct s_wall_tex
 	int		endian;
 	int		width;
 	int		height;
-}				t_wall_tex;
+} 				t_wall_tex;
 
 typedef struct	s_mlx
 {

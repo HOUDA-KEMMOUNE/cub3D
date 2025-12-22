@@ -8,10 +8,14 @@ MAKEFLAGS += --no-print-directory
 QUIET ?= @
 SILENT_MAKE = $(QUIET)$(MAKE) -s
 
-SRC = main.c utils.c parsing/parsing_color.c parsing/parsing_directions.c\
-	parsing/map_parsing.c parsing/map_parsing_utils.c raycasting/game.c\
-	raycasting/init.c raycasting/movements.c raycasting/raycasting.c\
-	raycasting/render.c raycasting/textures.c
+SRC = main.c main_helper.c main_run.c utils.c parsing/parsing_color.c parsing/parsing_color_helper.c parsing/parsing_directions.c parsing/parsing_directions_helper.c\
+	parsing/map_parsing.c parsing/map_parsing_utils.c \
+	parsing/map_parsing_checks.c parsing/map_parsing_extra.c \
+	parsing/map_parsing_spaces.c parsing/map_parsing_space_utils.c \
+	parsing/map_parsing_player.c parsing/helpers.c\
+	parsing/helpers2.c parsing/helpers3.c parsing/helpers4.c parsing/helpers5.c\
+	raycasting/game.c raycasting/init.c raycasting/movements.c\
+	raycasting/raycasting.c raycasting/render.c raycasting/textures.c
 
 GNL_SRC = get_next_line/get_next_line.c
 GNL_OBJ = $(GNL_SRC:.c=.o)
