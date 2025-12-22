@@ -9,8 +9,8 @@
 #include "mlx.h"
 #include "parsing.h"
 
-# define WIN_WIDTH 1280
-# define WIN_HEIGHT 720
+# define WIN_WIDTH 1600
+# define WIN_HEIGHT 900
 
 // Key codes
 # define KEY_W 119
@@ -133,4 +133,8 @@ long	get_time_ms(void);
 void	calculate_delta_time(t_game *game); 
 void	load_textures(t_game *game);
 
+//cleanup functions
+void	cleanup(t_game *game);
+void	free_texture_paths(t_game *game);
+void	free_map(t_game *game);
 #endif
