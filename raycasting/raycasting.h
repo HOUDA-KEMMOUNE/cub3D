@@ -132,6 +132,7 @@ void	calculate_wall_height(t_ray *ray, t_player *player);
 long	get_time_ms(void);      
 void	calculate_delta_time(t_game *game); 
 void	load_textures(t_game *game);
+t_wall_tex	*choose_wall_texture(t_game *game, t_ray *ray);
 
 //cleanup functions
 void	cleanup(t_game *game);
