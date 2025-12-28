@@ -12,10 +12,6 @@
 
 #include "raycasting.h"
 
-static void	to_draw_ceiling(t_game *game, int x, t_ray *ray);
-static void	to_draw_wall(t_game *game, t_ray *ray, int x);
-static void	to_draw_floor(t_game *game, int x, t_ray *ray);
-
 void	draw_wall_column(t_game *game, t_ray *ray, int x)
 {
 	calculate_wall_height(ray, game->player);
