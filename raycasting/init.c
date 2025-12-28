@@ -16,7 +16,7 @@ void	init_player_direction(t_player *player)
 {
 	if (player->type == north || player->p == 'N')
 		player->angle = 3 * M_PI / 2;
-	else if (player->type == south || player->p == 'S')
+	else if (player->type == south || player->p == 'S') 
 		player->angle = M_PI / 2;
 	else if (player->type == east || player->p == 'E')
 		player->angle = 0;

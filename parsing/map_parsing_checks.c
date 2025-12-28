@@ -33,8 +33,7 @@ static void	map_mid_check_star(char **map, int y, int *px)
 
 	x = *px;
 	j = x - 1;
-	while (j >= 0 && (map[y][j] == ' ' || map[y][j] == '\t'
-			|| map[y][j] == '*'))
+	while (j >= 0 && (map[y][j] == ' ' || map[y][j] == '\t'))
 		j--;
 	if (j < 0 || map[y][j] != '1')
 	{
