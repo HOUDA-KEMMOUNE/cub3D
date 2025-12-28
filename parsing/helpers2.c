@@ -79,11 +79,12 @@ void	filling_struct_map(t_maze *maze, int row, int column)
 {
 	int	y;
 
-	maze->map = ft_calloc(column, sizeof(char *));
+	maze->map = ft_calloc(column + 1, sizeof(char *));
 	y = 0;
 	while (y < column)
 	{
 		maze->map[y] = ft_calloc(row + 1, sizeof(char));
 		y++;
 	}
+	maze->map[column] = NULL;
 }

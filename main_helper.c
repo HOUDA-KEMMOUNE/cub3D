@@ -81,19 +81,32 @@ void	fill_textures(char *line, char *text, t_texture *texture)
 	char	**second_split;
 
 	first_split = ft_split(line, ' ');
+	if (!first_split || !first_split[1])
+	{
+		free_split(first_split);
+		return ;
+	}
 	second_split = ft_split(first_split[1], '\n');
+	if (!second_split || !second_split[0])
+	{
+		free_split(first_split);
+		free_split(second_split);
+		return ;
+	}
 	if (ft_strncmp(text, "NO", 2) == 0)
-		texture->no = second_split[0];
+		texture->no = ft_strdup(second_split[0]);
 	else if (ft_strncmp(text, "SO", 2) == 0)
-		texture->so = second_split[0];
+		texture->so = ft_strdup(second_split[0]);
 	else if (ft_strncmp(text, "WE", 2) == 0)
-		texture->we = second_split[0];
+		texture->we = ft_strdup(second_split[0]);
 	else if (ft_strncmp(text, "EA", 2) == 0)
-		texture->ea = second_split[0];
+		texture->ea = ft_strdup(second_split[0]);
 	else if (ft_strncmp(text, "C", 1) == 0)
-		texture->c = second_split[0];
+		texture->c = ft_strdup(second_split[0]);
 	else if (ft_strncmp(text, "F", 1) == 0)
-		texture->f = second_split[0];
+		texture->f = ft_strdup(second_split[0]);
+	free_split(first_split);
+	free_split(second_split);
 }
 
 void	check_if_map_exist(char *file_name)

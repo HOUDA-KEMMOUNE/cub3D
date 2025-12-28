@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
+/*                                                        :::      :::: ::::   */
+/*   cleanup. c                                          :+:      :+:    :+:   */
+/*                                                    +: + +:+         +:+     */
 /*   By: hkemmoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/28 04:55:02 by hkemmoun          #+#    #+#             */
-/*   Updated: 2025/12/28 04:55:04 by hkemmoun         ###   ########.fr       */
+/*   Created: 2025/12/28 12:00:00 by hkemmoun          #+#    #+#             */
+/*   Updated: 2025/12/28 12:00:02 by hkemmoun         ###   ########. fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "raycasting/raycasting.h"
 
-static void	free_texture_field(char **field)
+static void	safe_free(void **ptr)
 {
-	if (field && *field)
+	if (ptr && *ptr)
 	{
-		free(*field);
-		*field = NULL;
+		free(*ptr);
+		*ptr = NULL;
 	}
 }
 
@@ -26,46 +26,42 @@ void	free_map(t_game *game)
 	int	i;
 
 	if (!game || !game->maze)
-		return ;
+		return;
+	
 	if (game->maze->map)
 	{
 		i = 0;
-		while (i < game->maze->max_row && game->maze->map[i])
+		while (game->maze->map[i] != NULL)
 		{
-			free(game->maze->map[i]);
-			game->maze->map[i] = NULL;
+			safe_free((void **)&game->maze->map[i]);
 			i++;
 		}
-		free(game->maze->map);
-		game->maze->map = NULL;
+		safe_free((void **)&game->maze->map);
 	}
-	free(game->maze);
-	game->maze = NULL;
+	safe_free((void **)&game->maze->first_line);
+	safe_free((void **)&game->maze);
 }
 
 void	free_texture_paths(t_game *game)
 {
 	if (!game || !game->texture)
-		return ;
-	free_texture_field(&game->texture->no);
-	free_texture_field(&game->texture->so);
-	free_texture_field(&game->texture->ea);
-	free_texture_field(&game->texture->we);
-	free_texture_field(&game->texture->c);
-	free_texture_field(&game->texture->f);
-	free(game->texture);
-	game->texture = NULL;
+		return;
+	
+	safe_free((void **)&game->texture->no);
+	safe_free((void **)&game->texture->so);
+	safe_free((void **)&game->texture->ea);
+	safe_free((void **)&game->texture->we);
+	safe_free((void **)&game->texture->c);
+	safe_free((void **)&game->texture->f);
+	
+	safe_free((void **)&game->texture);
 }
 
 void	cleanup(t_game *game)
 {
-	if (!game)
-		return ;
+	if (! game)
+		return;
 	free_texture_paths(game);
 	free_map(game);
-	if (game->player)
-	{
-		free(game->player);
-		game->player = NULL;
-	}
+	safe_free((void **)&game->player);
 }
