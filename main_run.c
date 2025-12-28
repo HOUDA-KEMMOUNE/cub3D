@@ -24,34 +24,34 @@ static void	init_game_struct(t_game *game)
 	}
 }
 
-static void	parse_and_load(t_game *game, int fd)
+static void	parse_and_load(t_game *game, int fd,char *filename)
 {
 	parsing_directions(fd);
-	if (parse_fc_color("map.cub") == 0)
+	if (parse_fc_color(filename) == 0)
 		exit(1);
-	textures_init("map.cub", game->texture);
+	textures_init(filename, game->texture);
 	game->texture->c_int = rgb_to_int(game->texture->c);
 	game->texture->f_int = rgb_to_int(game->texture->f);
 }
 
-static void	validate_and_build(t_game *game)
+static void	validate_and_build(t_game *game,char *filename)
 {
-	check_if_map_exist("map.cub");
-	check_map_position("map.cub");
-	map_parsing("map.cub", game->maze, game->player);
+	check_if_map_exist(filename);
+	check_map_position(filename);
+	map_parsing(filename, game->maze, game->player);
 	gnl_cleanup();
 	init_player_direction(game->player);
 }
 
-void	run_game(void)
+void	run_game(char *filename)
 {
 	int		fd;
 	t_game	game;
 
-	fd = open("map.cub", O_RDONLY);
+	fd = open(filename, O_RDONLY);
 	check_open(fd);
 	init_game_struct(&game);
-	parse_and_load(&game, fd);
-	validate_and_build(&game);
+	parse_and_load(&game, fd,filename);
+	validate_and_build(&game,filename);
 	start_cub3d(&game);
 }

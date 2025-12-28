@@ -11,9 +11,20 @@
 /* ************************************************************************** */
 
 #include "main_helper.h"
-
-int	main(void)
+int check_file_name(char *filename)
 {
-	run_game();
+	char **str=ft_split(filename,'.');
+	if(!ft_strncmp(str[1],"cub",ft_strlen(str[1])) && ft_strlen(str[1]))
+		return 1;
+	return 0;
+}
+int	main(int ac, char **av)
+{
+	if(ac==2){
+		if(check_file_name(av[1]))
+			run_game(av[1]);
+		else
+			printf("invalid map name\n");
+	}
 	return (0);
 }
