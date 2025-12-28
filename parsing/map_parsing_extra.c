@@ -45,28 +45,27 @@ static void	copy_line_to_row(t_maze *maze, int y, char *line, int row)
 
 static void	read_map_lines(t_maze *maze, int row, int column, int fd)
 {
-    char	*line;
-    int		y;
+	char	*line;
+	int		y;
 
-    y = 0;
-    line = get_next_line(fd);
-    // NEW: skip header until first map line
-    while (line && ft_strncmp(line, maze->first_line,
-            ft_strlen(maze->first_line)) != 0)
-    {
-        free(line);
-        line = get_next_line(fd);
-    }
-    while (line != NULL && y < column)
-    {
-        copy_line_to_row(maze, y, line, row);
-        y++;
-        free(line);
-        line = get_next_line(fd);
-    }
-    if (line)
-        free(line);
-    maze->map[y] = NULL;
+	y = 0;
+	line = get_next_line(fd);
+	while (line && ft_strncmp(line, maze->first_line,
+			ft_strlen(maze->first_line)) != 0)
+	{
+		free(line);
+		line = get_next_line(fd);
+	}
+	while (line != NULL && y < column)
+	{
+		copy_line_to_row(maze, y, line, row);
+		y++;
+		free(line);
+		line = get_next_line(fd);
+	}
+	if (line)
+		free(line);
+	maze->map[y] = NULL;
 }
 
 void	map_array(t_maze *maze, int row, int column, int fd)

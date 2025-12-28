@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hkemmoun <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/28 04:38:42 by hkemmoun          #+#    #+#             */
+/*   Updated: 2025/12/28 04:38:43 by hkemmoun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "raycasting.h"
 
 void	my_mlx_pixel_put(t_img *img, int x, int y, unsigned int color)
@@ -17,7 +29,7 @@ void	render_frame(t_game *game)
 	x = 0;
 	while (x < WIN_WIDTH)
 	{
-		cast_ray(game, x);  // Cast one ray per screen column
+		cast_ray(game, x);
 		x++;
 	}
 }

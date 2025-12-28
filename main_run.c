@@ -54,5 +54,5 @@ void	run_game(void)
 	init_game_struct(&game);
 	parse_and_load(&game, fd);
 	validate_and_build(&game);
-	start_cub3D(&game);
+	start_cub3d(&game);
 }

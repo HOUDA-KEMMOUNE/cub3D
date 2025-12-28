@@ -14,14 +14,15 @@
 
 void	free_split(char **s)
 {
-    int i = 0;
+	int	i;
 
-    if (!s)
-        return;
-    while (s[i])
-    {
-        free(s[i]);   // free each string
-        i++;
-    }
-    free(s);
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		free(s[i]);
+		i++;
+	}
+	free(s);
 }
