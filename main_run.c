@@ -26,8 +26,7 @@ static void	init_game_struct(t_game *game)
 
 static void	parse_and_load(t_game *game, int fd)
 {
-	if (parsing_directions(fd) == 1)
-		exit(1);
+	parsing_directions(fd);
 	if (parse_fc_color("map.cub") == 0)
 		exit(1);
 	textures_init("map.cub", game->texture);

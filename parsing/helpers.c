@@ -29,32 +29,9 @@ int	skip_spaces(char *line)
 	return (i);
 }
 
-static void	check_border_line(char *line, char *msg)
-{
-	int	x;
-
-	x = 0;
-	while (line[x])
-	{
-		if (line[x] == '1' || line[x] == ' ' || line[x] == '\t'
-			|| line[x] == '*')
-			x++;
-		else
-		{
-			printf("Error\n");
-			printf("%s\n", msg);
-			exit(1);
-		}
-	}
-}
-
 void	check_first_nd_last_line(char **map, int last_column)
 {
 	check_stars(map, last_column);
-	check_border_line(map[0],
-		"First line should include just 1s and spaces !");
-	check_border_line(map[last_column],
-		"Last line should include just 1s and spaces !");
 }
 
 void	parse_space_error_msg(void)

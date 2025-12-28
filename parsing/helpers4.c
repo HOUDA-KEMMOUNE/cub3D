@@ -32,10 +32,8 @@ void	maze_max_row(t_maze *maze, int fd, char *line)
 	i = 0;
 	while (line != NULL)
 	{
-		while (line[i] != '\n')
+		while (line[i] && line[i] != '\n')
 		{
-			if (line[i] == '\0')
-				break ;
 			count++;
 			i++;
 		}
@@ -85,8 +83,9 @@ void	check_zero(int y, int x, char **map)
 		&& (map[y + 1][x] == ' ' || map[y + 1][x] == '\t'
 			|| map[y + 1][x] == '*' || map[y + 1][x] == '\0'))
 		zero_error(y, x);
-	if (map[y][x + 1] == ' ' || map[y][x + 1] == '\t'
-		|| map[y][x + 1] == '*' || map[y][x + 1] == '\0')
+	if (map[y][x + 1] != '\0'
+		&& (map[y][x + 1] == ' ' || map[y][x + 1] == '\t'
+			|| map[y][x + 1] == '*' || map[y][x + 1] == '\0'))
 		zero_error(y, x);
 	if (map[y][x - 1] == ' ' || map[y][x - 1] == '\t'
 		|| map[y][x - 1] == '*' || map[y][x - 1] == '\0')
