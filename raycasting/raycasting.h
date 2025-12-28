@@ -133,6 +133,8 @@ void		move_forward(t_game *game);
 void		move_backward(t_game *game);
 void		move_left(t_game *game);
 void		move_right(t_game *game);
+void		handle_movement(t_game *game);
+int			is_valid_position(t_game *game, double x, double y);
 void		rotate_left(t_game *game);
 void		rotate_right(t_game *game);
 void		init_ray(t_ray *ray, t_player *player, int x);
@@ -143,6 +145,8 @@ long		get_time_ms(void);
 void		calculate_delta_time(t_game *game);
 void		load_textures(t_game *game);
 t_wall_tex	*choose_wall_texture(t_game *game, t_ray *ray);
+void		choose_tex_coordinates(t_game *game, t_ray *ray,
+				double *wall_x, int *tex_x);
 int			key_release(int key_code, t_game *game);
 int			key_press(int key_code, t_game *game);
 void		check_arg(void *ptr);
@@ -151,5 +155,4 @@ int			loop_hook(t_game *game);
 void		cleanup(t_game *game);
 void		free_texture_paths(t_game *game);
 void		free_map(t_game *game);
-
 #endif

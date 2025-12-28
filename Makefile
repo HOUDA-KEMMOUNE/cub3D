@@ -17,7 +17,10 @@ SRC = main.c main_helper.c main_run.c utils.c \
 	parsing/map_parsing_player.c parsing/helpers.c parsing/helpers2.c \
 	parsing/helpers3.c parsing/helpers4.c parsing/helpers5.c \
 	raycasting/game.c raycasting/init.c raycasting/movements.c \
-	raycasting/raycasting.c raycasting/render.c raycasting/textures.c \
+	raycasting/movements_helper.c raycasting/games_helper.c \
+	raycasting/games_helper2.c raycasting/raycasting.c \
+	raycasting/raycasting_helper.c raycasting/render.c \
+	raycasting/textures.c raycasting/wall_drawing.c \
 	cleanup.c
 
 GNL_SRC = get_next_line/get_next_line.c

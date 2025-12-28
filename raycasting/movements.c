@@ -12,7 +12,7 @@
 
 #include "raycasting.h"
 
-static int	is_valid_position(t_game *game, double x, double y)
+int	is_valid_position(t_game *game, double x, double y)
 {
 	if ((int)y < 0 || (int)y >= game->maze->max_row)
 		return (0);

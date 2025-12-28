@@ -12,20 +12,16 @@
 
 #include "raycasting.h"
 
+static void	to_draw_ceiling(t_game *game, int x, t_ray *ray);
+static void	to_draw_wall(t_game *game, t_ray *ray, int x);
+static void	to_draw_floor(t_game *game, int x, t_ray *ray);
+
 void	draw_wall_column(t_game *game, t_ray *ray, int x)
 {
-	int		y;
-	double	wall_x;
-	int		tex_x;
-	double	step;
-
 	calculate_wall_height(ray, game->player);
-	choose_tex_coordinates(game, ray, &wall_x, &tex_x);
-	step = (double)choose_wall_texture(game, ray)->height
-		/ (double)ray->line_height;
-	draw_ceiling(game, x, ray);
-	draw_wall(game, ray, x, step);
-	draw_floor(game, x, ray);
+	to_draw_ceiling(game, x, ray);
+	to_draw_wall(game, ray, x);
+	to_draw_floor(game, x, ray);
 }
 
 void	cast_ray(t_game *game, int x)
@@ -39,7 +35,7 @@ void	cast_ray(t_game *game, int x)
 	draw_wall_column(game, &ray, x);
 }
 
-void	draw_ceiling(t_game *game, int x, t_ray *ray)
+static void	to_draw_ceiling(t_game *game, int x, t_ray *ray)
 {
 	int	y;
 
@@ -51,35 +47,36 @@ void	draw_ceiling(t_game *game, int x, t_ray *ray)
 	}
 }
 
-void	draw_wall(t_game *game, t_ray *ray, int x, double step)
+static void	to_draw_wall(t_game *game, t_ray *ray, int x)
 {
-	int			y;
-	double		tex_pos;
-	int			tex_y;
-	char		*pixel;
 	t_wall_tex	*tex;
+	double		step;
+	double		tex_pos;
+	int			pos[2];
+	int			tex_y;
 
 	tex = choose_wall_texture(game, ray);
+	choose_tex_coordinates(game, ray, &tex_pos, &pos[0]);
+	step = (double)tex->height / (double)ray->line_height;
 	tex_pos = (ray->draw_start - WIN_HEIGHT / 2 + ray->line_height / 2)
 		* step;
-	y = ray->draw_start;
-	while (y <= ray->draw_end)
+	pos[1] = ray->draw_start;
+	while (pos[1] <= ray->draw_end)
 	{
 		tex_y = (int)tex_pos;
 		if (tex_y < 0)
 			tex_y = 0;
-		if (tex_y >= tex->height)
+		else if (tex_y >= tex->height)
 			tex_y = tex->height - 1;
-		pixel = tex->addr + (tex_y * tex->line_lenght)
-			+ (tex->bpp / 8);
-		my_mlx_pixel_put(&game->mlx.img, x, y,
-			*(unsigned int *)pixel);
+		my_mlx_pixel_put(&game->mlx.img, x, pos[1],
+			*(unsigned int *)(tex->addr + (tex_y * tex->line_lenght)
+				+ (pos[0] * (tex->bpp / 8))));
 		tex_pos += step;
-		y++;
+		pos[1]++;
 	}
 }
 
-void	draw_floor(t_game *game, int x, t_ray *ray)
+static void	to_draw_floor(t_game *game, int x, t_ray *ray)
 {
 	int	y;
 
