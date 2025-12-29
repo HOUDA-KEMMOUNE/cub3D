@@ -12,7 +12,12 @@
 
 #include "get_next_line.h"
 
-static char	*g_rest = NULL;
+static char	**rest_slot(void)
+{
+	static char	*rest = NULL;
+
+	return (&rest);
+}
 
 char	*get_line(char *buffer, char *rest, int fd)
 {
@@ -64,29 +69,34 @@ char	*get_next_line(int fd)
 {
 	char		*buffer;
 	char		*line;
+	char		**rest;
 
+	rest = rest_slot();
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = malloc((size_t)BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	line = get_line(buffer, g_rest, fd);
+	line = get_line(buffer, *rest, fd);
 	free (buffer);
 	if (!line)
 	{
-		free(g_rest);
-		g_rest = NULL;
+		free(*rest);
+		*rest = NULL;
 		return (NULL);
 	}
-	g_rest = rest_char(line);
+	*rest = rest_char(line);
 	return (line);
 }
 
 void	gnl_cleanup(void)
 {
-	if (g_rest)
+	char	**rest;
+
+	rest = rest_slot();
+	if (*rest)
 	{
-		free(g_rest);
-		g_rest = NULL;
+		free(*rest);
+		*rest = NULL;
 	}
 }

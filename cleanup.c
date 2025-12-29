@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      :::: ::::   */
-/*   cleanup. c                                          :+:      :+:    :+:   */
-/*                                                    +: + +:+         +:+     */
+/*                                                        :::      ::::::::   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
 /*   By: hkemmoun <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/28 12:00:00 by hkemmoun          #+#    #+#             */
-/*   Updated: 2025/12/28 12:00:02 by hkemmoun         ###   ########. fr       */
+/*   Created: 2025/12/29 00:11:53 by hkemmoun          #+#    #+#             */
+/*   Updated: 2025/12/29 00:11:56 by hkemmoun         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	free_map(t_game *game)
 	int	i;
 
 	if (!game || !game->maze)
-		return;
-	
+		return ;
 	if (game->maze->map)
 	{
 		i = 0;
@@ -45,22 +44,20 @@ void	free_map(t_game *game)
 void	free_texture_paths(t_game *game)
 {
 	if (!game || !game->texture)
-		return;
-	
+		return ;
 	safe_free((void **)&game->texture->no);
 	safe_free((void **)&game->texture->so);
 	safe_free((void **)&game->texture->ea);
 	safe_free((void **)&game->texture->we);
 	safe_free((void **)&game->texture->c);
 	safe_free((void **)&game->texture->f);
-	
 	safe_free((void **)&game->texture);
 }
 
 void	cleanup(t_game *game)
 {
 	if (! game)
-		return;
+		return ;
 	free_texture_paths(game);
 	free_map(game);
 	safe_free((void **)&game->player);

@@ -24,7 +24,7 @@ static void	init_game_struct(t_game *game)
 	}
 }
 
-static void	parse_and_load(t_game *game, int fd,char *filename)
+static void	parse_and_load(t_game *game, int fd, char *filename)
 {
 	parsing_directions(fd);
 	if (parse_fc_color(filename) == 0)
@@ -34,7 +34,7 @@ static void	parse_and_load(t_game *game, int fd,char *filename)
 	game->texture->f_int = rgb_to_int(game->texture->f);
 }
 
-static void	validate_and_build(t_game *game,char *filename)
+static void	validate_and_build(t_game *game, char *filename)
 {
 	check_if_map_exist(filename);
 	check_map_position(filename);
@@ -51,7 +51,7 @@ void	run_game(char *filename)
 	fd = open(filename, O_RDONLY);
 	check_open(fd);
 	init_game_struct(&game);
-	parse_and_load(&game, fd,filename);
-	validate_and_build(&game,filename);
+	parse_and_load(&game, fd, filename);
+	validate_and_build(&game, filename);
 	start_cub3d(&game);
 }

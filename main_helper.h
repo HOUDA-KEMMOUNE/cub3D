@@ -21,6 +21,8 @@ void	fill_textures(char *line, char *text, t_texture *texture);
 void	textures_init(char *file_name, t_texture *texture);
 void	check_if_map_exist(char *file_name);
 void	check_map_position(char *file_name);
+void	assign_texture(char *id, char *value,
+			t_texture *texture);
 void	run_game(char *filename);
 
 #endif

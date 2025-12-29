@@ -93,18 +93,7 @@ void	fill_textures(char *line, char *text, t_texture *texture)
 		free_split(second_split);
 		return ;
 	}
-	if (ft_strncmp(text, "NO", 2) == 0)
-		texture->no = ft_strdup(second_split[0]);
-	else if (ft_strncmp(text, "SO", 2) == 0)
-		texture->so = ft_strdup(second_split[0]);
-	else if (ft_strncmp(text, "WE", 2) == 0)
-		texture->we = ft_strdup(second_split[0]);
-	else if (ft_strncmp(text, "EA", 2) == 0)
-		texture->ea = ft_strdup(second_split[0]);
-	else if (ft_strncmp(text, "C", 1) == 0)
-		texture->c = ft_strdup(second_split[0]);
-	else if (ft_strncmp(text, "F", 1) == 0)
-		texture->f = ft_strdup(second_split[0]);
+	assign_texture(text, second_split[0], texture);
 	free_split(first_split);
 	free_split(second_split);
 }
